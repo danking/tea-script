@@ -3,7 +3,7 @@
 (require rackunit "../js-to-text.scm")
 
 (define sa string-append)
-(define (jt js) (jstatement->text js))
+(define jt jstatement->text)
 
 (define js-to-text-ts
   (test-suite
