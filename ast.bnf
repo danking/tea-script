@@ -1,0 +1,7 @@
+<definition> ::= "(" "define" <symbol> <expression> ")"
+               | "(" "define" "(" <symbol> <symbol>* ")" <expression>* ")"
+
+<expression> ::= <symbol>
+               | <number>
+               | <string>
+               | "(" <expression>* ")"

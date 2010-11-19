@@ -1,0 +1,97 @@
+Features
+ - [ ] Gensym to handle non-JS allowed variable names
+ - [ ] Gensym variable names align one to one to symbols of the same
+       textual representation
+ - [ ] BigNums
+ - [ ] Bracket operator (array access, hash access)
+ - [ ] a JOp struct that fathers all the primitive operations
+
+Optimizations
+ - [ ] ->csv* in translator.scm might benefit from not using format to append
+       the recursive call
+
+Failures
+ - [ ] a define statement will have unnecessary tabbing before the first
+       expression
+
+How will I translate + and other operators?
+  (+ 1 2)   => (1 + 2)
+  (+ 1 2 3) => (1 + 2 + 3)
+  +         => ???
+
+    maybe,
+
+  (+ 1 2)   => __tea_plus(1, 2)
+  (+ 1 2 3) => __tea_plus(1, 2, 3)
+  +         => __tea_plus
+
+I dislike this style of avoiding namespace collision.
+
+---
+
+How will I deal with dashes in variable names?
+  I could explicitly disallow them but I really like dashes
+  in my variable names
+
+    maybe,
+
+  (define foo-bar 3)    => __teaVars["foo-bar"] = 3
+  (define foo 3)        => var foo = 3
+  (my-func foo-bar)     => __teaVars["my-func"](__teaVars["foo-bar"])
+
+    better yet,
+
+  * Hide Me
+     (07:56:53 PM) Drew Atkin: I might cast my for for a scheme where "foo-bar" -> "__tea_special_foo_bar" or something
+     (07:56:55 PM) Drew Atkin: *cast my vote for...
+     (07:57:17 PM) Drew Atkin: i like keeping it as a 1:1 mapping to variables
+     (07:57:20 PM) armageddon00@gmail.com/DF602F80: Two things make me cringe about this approach.  One, I'm hoping no one uses the name __teaVars, which is terrible namespace security.  I really ought to come up with a better solution.  Second, I'm worried about the added complexity of using a hash
+     (07:57:23 PM) Drew Atkin: and not stuff them off in a map somehwere
+     (07:57:34 PM) Drew Atkin: there is no better solution
+     (07:57:38 PM) armageddon00@gmail.com/DF602F80: I can't keep it 1:1 mapping in all cases.  What if I use foo-bar and foo_bar ?
+     (07:57:53 PM) Drew Atkin: then foo_bar is foo_bar
+     (07:57:59 PM) Drew Atkin: and foo-bar is __tea_special_foo_bar
+     (07:58:07 PM) armageddon00@gmail.com/DF602F80: hmm.
+     (07:58:19 PM) armageddon00@gmail.com/DF602F80: That's a good solution
+     (07:58:25 PM) Drew Atkin: _tea_special only gets used when you have the characters in the tea var name are illegal in js
+     (07:58:36 PM) Drew Atkin: bah
+     (07:58:38 PM) armageddon00@gmail.com/DF602F80: IOH
+     (07:58:40 PM) Drew Atkin: when the characters
+     (07:58:44 PM) armageddon00@gmail.com/DF602F80: foo-bar_ and foo_bar-
+     (07:58:47 PM) armageddon00@gmail.com/DF602F80: those won't be unique
+     (07:59:06 PM) Drew Atkin: true
+     (07:59:16 PM) Drew Atkin: you should just gensym that shit then
+     (07:59:19 PM) armageddon00@gmail.com/DF602F80: >_>
+     (07:59:26 PM) armageddon00@gmail.com/DF602F80: If only javascript could do shit like that
+     (07:59:53 PM) armageddon00@gmail.com/DF602F80: wait
+     (08:00:03 PM) armageddon00@gmail.com/DF602F80: JS lets me muck with the environment?  maybe?
+     (08:00:17 PM) armageddon00@gmail.com/DF602F80: god
+     (08:00:22 PM) armageddon00@gmail.com/DF602F80: I hate normal programming languages
+     (08:00:35 PM) armageddon00@gmail.com/DF602F80: They overload terms which are well-defined in academic circles.
+     (08:00:46 PM) Drew Atkin: the gensym'ing would happen on your end
+     (08:00:51 PM) armageddon00@gmail.com/DF602F80: yeah
+     (08:00:54 PM) armageddon00@gmail.com/DF602F80: oh
+     (08:00:55 PM) armageddon00@gmail.com/DF602F80: yeah
+     (08:00:58 PM) Drew Atkin: you create a symbol table and all that shit
+     (08:01:14 PM) armageddon00@gmail.com/DF602F80: augh
+     (08:01:23 PM) armageddon00@gmail.com/DF602F80: I guess that's the best solution
+     (08:01:37 PM) armageddon00@gmail.com/DF602F80: I might ask for some help in the implementation of that.
+     (08:01:44 PM) armageddon00@gmail.com/DF602F80: I think for now I'll just ignore dashes
+     (08:01:59 PM) armageddon00@gmail.com/DF602F80: I'll implement the gensym once I have other thing working
+  * end
+
+---
+
+How do I know when to add semicolons?
+  Obviously at the end of a statement, but I'll have to be aware of when
+  I finish statement
+
+
+---
+
+How do I know when a function should be named versus unnamed?
+  Sometimes the user may want an explicitly named function, for the sake
+  of debugging.  I should probably keep named functions named instead of
+  parsing them to a define variable with a lambda
+
+
