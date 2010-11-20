@@ -1,7 +1,7 @@
 #lang racket
-(require "parser.scm"
-         "scheme-to-js.scm"
-         "js-to-text.scm")
+(require "parser.rkt"
+         "scheme-to-js.rkt"
+         "js-to-text.rkt")
 (provide tea->js)
 
 (define (tea->js sexp)

@@ -1,6 +1,6 @@
 #lang racket
-(require "js-data.scm")
-(require "string-utilities.scm")
+(require "js-data.rkt")
+(require "string-utilities.rkt")
 (provide jstatement->text
          formatting
          formatting-depth

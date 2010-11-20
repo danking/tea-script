@@ -1,7 +1,7 @@
 #lang racket
 (require test-engine/racket-tests)
-(require "../parser.scm")
-(require "../tea-data.scm")
+(require "../parser.rkt")
+(require "../tea-data.rkt")
 
 (check-expect (parse-tea-defexp '(define foo 3))
               (tea-define (tea-id 'foo) (tea-number 3)))

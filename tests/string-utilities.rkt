@@ -1,5 +1,5 @@
 #lang racket
-(require "../string-utilities.scm")
+(require "../string-utilities.rkt")
 (require test-engine/racket-tests)
 
 ;; ->csv

@@ -1,6 +1,6 @@
 #lang racket
-(require "../js-data.scm")
-(require rackunit "../js-to-text.scm")
+(require "../js-data.rkt")
+(require rackunit "../js-to-text.rkt")
 
 (define sa string-append)
 (define jt jstatement->text)
@@ -18,7 +18,7 @@
 
 (define js-to-text-ts
   (test-suite
-   "Tests for js-to-text.scm"
+   "Tests for js-to-text.rkt"
    (test-case
     "JS Variable Definitions"
     (check-equal? (jt (jvdef (jid 'x)

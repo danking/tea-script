@@ -1,7 +1,7 @@
 #lang racket
-(require "../parser.scm")
-(require "../js-data.scm")
-(require "../scheme-to-js.scm")
+(require "../parser.rkt")
+(require "../js-data.rkt")
+(require "../scheme-to-js.rkt")
 (require test-engine/racket-tests)
 
 (define (to-js sexp) (tea-defexp->js (parse-tea-defexp sexp)))
