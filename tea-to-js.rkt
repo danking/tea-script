@@ -1,6 +1,6 @@
 #lang racket
-(require "scheme-data.scm")
-(require "js-data.scm")
+(require "scheme-data.rkt")
+(require "js-data.rkt")
 (provide tea-defexp->js)
 
 (define (tea-defexp->js scheme)
