@@ -3,22 +3,20 @@
 (require "string-utilities.scm")
 (provide jstatement->text
          formatting
-         formatting-indent?
-         formatting-depth)
+         formatting-depth
+         formatting-indent-str)
 
-(define INDENT_CHAR "  ")
-
-(struct formatting (indent? depth))
+(struct formatting (depth indent-str))
 ;; A formatting is a (formatting Boolean Number)
 ;; where ...
-;;  indent? indicates that this statement should begin with an indent
-;;  depth   indicates how many levels deep the code is
+;;  depth indicates how many levels deep the code is
+;;  indent-str the string used to indent code
 (define (depth+1 fmt)
-  (formatting (formatting-indent? fmt)
-              (+ 1 (formatting-depth fmt))))
+  (formatting (+ 1 (formatting-depth fmt))
+              (formatting-indent-str fmt)))
 
 (define (jstatement->text js)
-  (jstatement->text* js (formatting #f 0)))
+  (jstatement->text* js (formatting 0 "  ")))
 
 (define (jstatement->text* js formatting)
   (indent formatting
@@ -57,7 +55,7 @@
     [(jbool b)   (if b "true" "false")]
     [(jundef)    "undefined"]
     [(jnull)     "null"]
-    [(jstring s) (string-append "\"" s "\"")]
+    [(jstring s) (jstring->text jexp)]
     [(jnumber n) (number->string n)] ; fixme: use BigNum instead
     [(jarray ls) (string-append "[" (->csv (lambda (exp)
                                              (jexp->text exp formatting))
@@ -68,30 +66,85 @@
                                (->csv (lambda (exp)
                                         (jexp->text exp formatting))
                                       args))]
-    [(jdot object property) (format "~a.~a"
-                                    (jexp->text object formatting)
-                                    (jid->text property))]
     [(jlambda args body) (format (string-append "(function (~a) {\n"
                                                 "~a"
                                                 "})")
                                  (->csv jid->text args)
                                  (jstatements->text body formatting))]
+    [(jop) (jop->text jexp formatting)]))
+
+(define (jop->text jop formatting)
+  (match jop
+    [(jprimop op args) (jprimop->text jop formatting)]
+    [(jbracket object property) (format "~a[~a]"
+                                        (jexp->text object formatting)
+                                        (jstring->text property))]
+    [(jcond c t f) (format "(~a ? ~a : ~a)"
+                           (jexp->text c formatting)
+                           (jexp->text t formatting)
+                           (jexp->text f formatting))]
+    [(jcomma exps) (string-append "("
+                                  (->csv (lambda (exp)
+                                           (jexp->text exp formatting))
+                                         exps)
+                                  ")")]
+    [(jin property object) (format "(~a in ~a)"
+                                   (jexp->text property formatting)
+                                   (jexp->text object formatting))]
+    [(jinstof object type) (format "(~a instanceOf ~a)"
+                                   (jexp->text object formatting)
+                                   (jexp->text type formatting))]
+    [(jtypeof exp) (format "(typeof ~a)" (jexp->text exp formatting))]
     [(jnew name args) (format "new ~a(~a)"
                               (jid->text name)
                               (->csv (lambda (exp)
                                        (jexp->text exp formatting))
-                                     args))]))
+                                     args))]
+    [(jdot object property) (format "~a.~a"
+                                    (jexp->text object formatting)
+                                    (jid->text property))]))
+(define (jprimop->text jprimop formatting)
+  (string-append "(" (jprimop->text/noparens jprimop formatting) ")"))
+
+(define (jprimop->text/noparens jprimop formatting)
+  (let ([op (jprimop-op jprimop)]
+        [args (map (lambda (exp) (jexp->text exp formatting))
+                   (jprimop-args jprimop))])
+    (match op
+      [(or '+ '-)     (un/bin-ary->text op args)]
+      [(or '/ '* '== '!= '=== '!== '> '>= '< '<= '&& '||)
+       (binary->text op (first args) (second args))]
+      ['!             (unary->text op (first args))]
+      [(or '++_ '--_) (unary->text (substring (symbol->string op) 0 2)
+                                   (first args))]
+      [(or '_++ '_--) (unary->text (first args)
+                                   (substring (symbol->string op) 1 3))])))
+
+(define (un/bin-ary->text op args)
+  (if (empty? (rest args))
+      (unary->text op (first args))
+      (binary->text op (first args) (second args))))
+
+(define (unary->text head rear)
+  (format "~a~a" head rear))
+
+(define (binary->text op v1 v2)
+  (format "~a ~a ~a" v1 op v2))
 
 (define (jid->text my-jid)
   (match my-jid
     [(jid v) (symbol->string v)]
     [_ (error 'jid->text "expected an id, but got ~s" my-jid)]))
 
+(define (jstring->text my-jstring) ; tee hee
+  (match my-jstring
+    [(jstring s) (string-append "\"" s "\"")]
+    [_ (error 'jstring->text "expected a string, but got ~s" my-jstring)]))
+
 (define (jreturn->text jreturn formatting)
   (string-append "return " (jexp->text (jreturn-exp jreturn) formatting)))
 
-
 (define (indent formatting s)
   (string-append (string-repeat (formatting-depth formatting)
-                                INDENT_CHAR)
+                                (formatting-indent-str formatting))
                  s))
