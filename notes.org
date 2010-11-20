@@ -3,8 +3,8 @@ Features
  - [ ] Gensym variable names align one to one to symbols of the same
        textual representation
  - [ ] BigNums
- - [ ] Bracket operator (array access, hash access)
- - [ ] a JOp struct that fathers all the primitive operations
+ - [X] Bracket operator (array access, hash access)
+ - [X] a JOp struct that fathers all the primitive operations
 
 Optimizations
  - [ ] ->csv* in translator.scm might benefit from not using format to append
