@@ -30,10 +30,14 @@
     [(list 'lambda (list ids ...) bodies ..1)
      (tea-lambda (parse-tea-ids ids)
                  (parse-tea-exps bodies))]
-    [(list let (list (ids vals) ...) body ...)
+    [(list 'let (list (list ids vals) ...) body ...)
      (tea-let (parse-tea-ids ids)
               (parse-tea-exps vals)
               (parse-tea-exps body))]
+    [(list 'if c t f)
+     (tea-if (parse-tea-exp c)
+             (parse-tea-exp t)
+             (parse-tea-exp f))]
     [(list head tail ...)
      (tea-apply  (parse-tea-exp head)
                  (parse-tea-exps tail))]
