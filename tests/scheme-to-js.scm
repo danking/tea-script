@@ -1,12 +1,11 @@
 #lang racket
-(require "testing-defs.scm")
 (require "../parser.scm")
 (require "../js-data.scm")
 (require "../scheme-to-js.scm")
 (require test-engine/racket-tests)
 
 (define (to-js sexp) (tea-defexp->js (parse-tea-defexp sexp)))
-
+(define sa string-append)
 
 ;; numbers
 (check-expect (to-js '3) (jnumber 3))
