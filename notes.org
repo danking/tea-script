@@ -11,8 +11,8 @@ Optimizations
        the recursive call
 
 Failures
- - [ ] a define statement will have unnecessary tabbing before the first
-       expression
+ - [ ] No support for `if' in tea
+ - [ ] No support for `let' in tea
 
 How will I translate + and other operators?
   (+ 1 2)   => (1 + 2)
