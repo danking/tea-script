@@ -1,33 +1,38 @@
-#lang scheme
+#lang racket
 (provide (all-defined-out))
-(define-struct tea-define (name value) #:transparent)
-(define-struct tea-proc-define (name ids bodies) #:transparent)
-(define-struct tea-symbol (value) #:transparent)
-(define-struct tea-number (value) #:transparent)
-(define-struct tea-string (value) #:transparent)
-(define-struct tea-lambda (args bodies) #:transparent)
-(define-struct tea-apply  (head tail) #:transparent)
-(define-struct tea-identifier (value) #:transparent)
-(define-struct tea-list   (value) #:transparent)
 
-;; a Tea-Define is a (make-tea-define Tea-Identifier Tea-Expression)
+(define-syntax tstruct
+  (syntax-rules ()
+    [(_ args ...) (struct args ... #:transparent)]))
 
-;; a Tea-Proc-Define is a (make-tea-proc-define Tea-Identifier
-;;                                              [ListOf Tea-Identifier]
-;;                                              [ListOf Tea-Expression])
+(tstruct tea-define (name value))
+(tstruct tea-pdefine (name ids bodies))
+(tstruct tea-symbol (value))
+(tstruct tea-number (value))
+(tstruct tea-string (value))
+(tstruct tea-lambda (args bodies))
+(tstruct tea-apply  (head tail))
+(tstruct tea-id     (value))
+(tstruct tea-list   (value))
 
-;; a Tea-Symbol is a (make-tea-symbol Symbol)
+;; a Tea-Define is a (tea-define Tea-Identifier Tea-Expression)
 
-;; a Tea-Number is a (make-tea-number Number)
+;; a Tea-Proc-Define is a (tea-proc-define Tea-Identifier
+;;                                         [ListOf Tea-Identifier]
+;;                                         [ListOf Tea-Expression])
 
-;; a Tea-String is a (make-tea-string String)
+;; a Tea-Symbol is a (tea-symbol Symbol)
 
-;; a Tea-Lambda is a (make-tea-lambda [ListOf Tea-Identifier]
-;;                                    [ListOf Tea-Expression])
+;; a Tea-Number is a (tea-number Number)
 
-;; a Tea-Apply  is a (make-tea-apply Tea-Expression
-;;                                   Tea-Expression)
+;; a Tea-String is a (tea-string String)
 
-;; a Tea-Identifier is a (make-tea-identifier Symbol)
+;; a Tea-Lambda is a (tea-lambda [ListOf Tea-Identifier]
+;;                               [ListOf Tea-Expression])
 
-;; a Tea-List   is a (make-tea-list [ListOf Tea-Expression])
+;; a Tea-Apply  is a (tea-apply Tea-Expression
+;;                              Tea-Expression)
+
+;; a Tea-Identifier is a (tea-identifier Symbol)
+
+;; a Tea-List   is a (tea-list [ListOf Tea-Expression])

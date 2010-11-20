@@ -10,37 +10,37 @@
 (define (parse-tea-def def)
   (match def
     [(list 'define (list name ids ...) bodies ..1)
-     (make-tea-proc-define (parse-tea-id name)
+     (tea-pdefine (parse-tea-id name)
                            (map parse-tea-id ids)
                            (map parse-tea-exp bodies))]
-    [(list 'define id body) (make-tea-define (parse-tea-id id)
+    [(list 'define id body) (tea-define (parse-tea-id id)
                                              (parse-tea-exp body))]
     [_ (error 'lexer "expected ~s to be a definition")]))
 
 (define (parse-tea-exp exp)
   (match exp
-    [(? string? _) (make-tea-string exp)]
-    [(? number? _) (make-tea-number exp)]
-    [(? symbol? _) (make-tea-identifier exp)]
-    [(list 'quote (? symbol? s)) (make-tea-symbol s)]
-    [(list 'quote ls) (make-tea-list (map parse-tea-data ls))]
+    [(? string? _) (tea-string exp)]
+    [(? number? _) (tea-number exp)]
+    [(? symbol? _) (tea-id exp)]
+    [(list 'quote (? symbol? s)) (tea-symbol s)]
+    [(list 'quote ls) (tea-list (map parse-tea-data ls))]
     [(list 'lambda (list ids ...) bodies ..1)
-     (make-tea-lambda (map parse-tea-id ids)
+     (tea-lambda (map parse-tea-id ids)
                       (map parse-tea-exp bodies))]
     [(list head tail ...)
-     (make-tea-apply  (parse-tea-exp head)
+     (tea-apply  (parse-tea-exp head)
                       (map parse-tea-exp tail))]
     [_ (error 'lexer "expected ~s to be an expression" exp)]))
 
 (define (parse-tea-id id)
-  (if (symbol? id) (make-tea-identifier id)
+  (if (symbol? id) (tea-id id)
       (error 'lexer "expected ~s to be an identifier" id)))
 
 (define (parse-tea-data data)
   (match data
-    [(? string? _) (make-tea-string data)]
-    [(? number? _) (make-tea-number data)]
-    [(? symbol? _) (make-tea-symbol data)]
+    [(? string? _) (tea-string data)]
+    [(? number? _) (tea-number data)]
+    [(? symbol? _) (tea-symbol data)]
     [(list data ...)
-     (make-tea-list (map parse-tea-data data))]
+     (tea-list (map parse-tea-data data))]
     [_ (error 'lexer "expected ~s to be a datum" exp)]))
