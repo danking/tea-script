@@ -11,6 +11,8 @@
 (tstruct tea-number (value))
 (tstruct tea-string (value))
 (tstruct tea-lambda (args bodies))
+(tstruct tea-if     (c t f))
+(tstruct tea-let    (vars vals body))
 (tstruct tea-apply  (head tail))
 (tstruct tea-id     (value))
 (tstruct tea-list   (value))
@@ -29,6 +31,12 @@
 
 ;; a Tea-Lambda is a (tea-lambda [ListOf Tea-Identifier]
 ;;                               [ListOf Tea-Expression])
+
+;; a Tea-if     is a (tea-if Tea-Expression Tea-Expression Tea-Expression)
+
+;; a Tea-Let    is a (tea-let [ListOf Tea-Identifier]
+;;                            [ListOf Tea-Expression]
+;;                            [ListOf Tea-Expression])
 
 ;; a Tea-Apply  is a (tea-apply Tea-Expression
 ;;                              Tea-Expression)
