@@ -1,4 +1,4 @@
-#lang scheme
+#lang racket
 (require "parser.scm"
          "scheme-to-js.scm"
          "js-to-text.scm")
