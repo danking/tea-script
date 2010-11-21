@@ -1,21 +1,30 @@
 Features
- - [ ] Gensym to handle non-JS allowed variable names
- - [ ] Gensym variable names align one to one to symbols of the same
-       textual representation
  - [ ] BigNums
  - [X] Bracket operator (array access, hash access)
  - [X] a JOp struct that fathers all the primitive operations
  - [ ] require/provide?
- - [ ] support for tea `error' and JS `exception'
+ - [ ] it would be super neat to have a single file that could run any
+       combination of tests
 
 Optimizations
- - [ ] ->csv* in translator.scm might benefit from not using format to append
-       the recursive call
 
 Failures
  - [X] No support for `if' in tea
  - [X] No support for `let' in tea
- - [ ] No proper translation of `+' etc. to JS
+ - [ ] JS Expand does not allow reassignment of primitive operator identifiers
+
+Goals for Monday
+ - [ ] support for tea `error' (and JS `exception')
+ - [ ] proper translation of `+' etc. to JS
+ - [ ] Gensym to handle non-JS allowed variable names
+ - [ ] Gensym variable names must align one to one to symbols of the same
+       textual representation
+ - [ ] complete support for the `letrec' form
+ - [ ] complete support for the `cond' form
+ - [ ] runtime tests (compile into JS and then run in a JS interpeter)
+
+
+
 
 How will I translate + and other operators?
   (+ 1 2)   => (1 + 2)
@@ -96,5 +105,3 @@ How do I know when a function should be named versus unnamed?
   Sometimes the user may want an explicitly named function, for the sake
   of debugging.  I should probably keep named functions named instead of
   parsing them to a define variable with a lambda
-
-
