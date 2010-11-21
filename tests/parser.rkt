@@ -70,8 +70,9 @@
                                  (tea-number 2)
                                  (tea-list (list (tea-number 3)
                                                  (tea-number 4)
-                                                 (tea-list (list (tea-number 5)
-                                                                 (tea-number 6)))
+                                                 (tea-list (list
+                                                            (tea-number 5)
+                                                            (tea-number 6)))
                                                  (tea-symbol 'a)
                                                  (tea-symbol 'b)))
                                  (tea-string "c")
