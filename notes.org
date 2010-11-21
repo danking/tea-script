@@ -5,14 +5,17 @@ Features
  - [ ] BigNums
  - [X] Bracket operator (array access, hash access)
  - [X] a JOp struct that fathers all the primitive operations
+ - [ ] require/provide?
+ - [ ] support for tea `error' and JS `exception'
 
 Optimizations
  - [ ] ->csv* in translator.scm might benefit from not using format to append
        the recursive call
 
 Failures
- - [ ] No support for `if' in tea
- - [ ] No support for `let' in tea
+ - [X] No support for `if' in tea
+ - [X] No support for `let' in tea
+ - [ ] No proper translation of `+' etc. to JS
 
 How will I translate + and other operators?
   (+ 1 2)   => (1 + 2)
