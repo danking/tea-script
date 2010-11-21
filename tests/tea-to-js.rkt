@@ -1,8 +1,8 @@
 #lang racket
-(require "../parser.rkt")
-(require "../js-data.rkt")
-(require "../tea-to-js.rkt")
-(require rackunit "../tea-to-js.rkt")
+(require "../js-data.rkt"
+         "../parser.rkt"
+         rackunit
+         "../tea-to-js.rkt")
 
 (define (to-js sexp) (tea-defexp->js (parse-tea-defexp sexp)))
 (define sa string-append)
