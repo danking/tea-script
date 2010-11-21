@@ -3,8 +3,8 @@
 (require "js-data.rkt")
 (provide tea-defexp->js)
 
-(define (tea-defexp->js scheme)
-  (match scheme
+(define (tea-defexp->js tea-exp)
+  (match tea-exp
     [(tea-define name value)
      (tea-define->js name value)]
     [(tea-proc-define name ids bodies)
@@ -17,12 +17,19 @@
      (tea-string->js value)]
     [(tea-lambda args bodies)
      (tea-lambda->js args bodies)]
+    [(tea-if c t f)
+     (tea-if->js c t f)]
+    [(tea-let vars vals body)
+     (tea-let->js vars vals body)]
     [(tea-apply head tail)
      (tea-apply->js head tail)]
     [(tea-identifier value)
      (tea-id->js value)]
     [(tea-list value)
      (tea-list->js value)]))
+
+(define (tea-defexps->js tea-exps)
+  (map tea-defexp->js tea-exps))
 
 ;; tea-defexp->js/return-last : [ListOf Tea-Exp] -> [ListOf JS-Exp]
 (define (tea-defexp->js/return-last exps)
@@ -39,7 +46,7 @@
 
 (define (tea-proc-define->js name ids bodies)
   (jfdef (tea-id->js* name)
-         (map tea-id->js* ids)
+         (tea-ids->js* ids)
          (tea-defexp->js/return-last bodies)))
 
 (define (tea-symbol->js value)
@@ -52,19 +59,32 @@
 (define (tea-string->js value)
   (jstring value))
 
-(define (tea-lambda->js args bodies)
-  (jlambda (map tea-id->js* args)
-           (tea-defexp->js/return-last bodies)))
+(define (tea-lambda->js args body)
+  (jlambda (tea-ids->js* args)
+           (tea-defexp->js/return-last body)))
+
+(define (tea-if->js c t f)
+  (jcond (tea-defexp->js c)
+         (tea-defexp->js t)
+         (tea-defexp->js f)))
+
+(define (tea-let->js vars vals body)
+  (japply (jlambda (tea-ids->js* vars)
+                   (tea-defexp->js/return-last body))
+          (tea-defexps->js vals)))
 
 (define (tea-apply->js head tail)
   (japply (tea-defexp->js head)
-          (map tea-defexp->js tail)))
+          (tea-defexps->js tail)))
 
 (define (tea-id->js value)
   (jid value))
+
+(define (tea-ids->js* tea-ids)
+  (map (lambda (tea-id) (jid (tea-identifier-vale tea-id))) tea-ids))
 
 (define (tea-id->js* tea-id)
   (jid (tea-identifier-value tea-id)))
 
 (define (tea-list->js value)
-  (jarray (map tea-defexp->js value)))
+  (jarray (tea-defexps->js value)))
