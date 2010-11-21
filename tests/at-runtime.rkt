@@ -1,36 +1,14 @@
 #lang racket
 (require rackunit
-         "../main.rkt")
+         "../eval.rkt")
 (provide at-runtime-ts)
-
-(define (run sexp)
-  (read-all-lines (first (process (format (string-append "echo '~a' | "
-                                                         "rhino 2>&1 | "
-                                                         "sed 's/js> //'")
-                                          (tea->js sexp))))))
-
-(define (read-all-lines port)
-  (let [(line (read-line port))]
-   (cond [(eof-object? line) '()]
-         [else (cons line (read-all-lines port))])))
-
-(define (lines->output lines)
-  (if (>= (length lines) 3)
-      (third lines)
-      (last lines)))
-
-(define (lines->string lines)
-  (foldl (lambda (line lines)
-           (string-append lines "\n" line))
-         ""
-         lines))
 
 (define-syntax check-runtime
   (syntax-rules ()
-   [(_ sexp expected) (let [(output (run sexp))]
-                        (check-equal? (lines->output (reverse output))
+   [(_ sexp expected) (let [(output (tea-eval sexp))]
+                        (check-equal? (first output)
                                       expected
-                                      (lines->string output)))]))
+                                      (second output)))]))
 
 ;; symbols
 (define at-runtime-ts
