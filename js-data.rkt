@@ -1,5 +1,5 @@
 #lang racket
-(provide (all-defined-out))
+(provide (except-out (all-defined-out) tstruct))
 
 (define-syntax tstruct
   (syntax-rules ()
