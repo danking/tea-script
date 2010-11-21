@@ -1,5 +1,5 @@
 #lang racket
-(require "scheme-data.rkt")
+(require "tea-data.rkt")
 (require "js-data.rkt")
 (provide tea-defexp->js)
 
@@ -7,8 +7,8 @@
   (match tea-exp
     [(tea-define name value)
      (tea-define->js name value)]
-    [(tea-proc-define name ids bodies)
-     (tea-proc-define->js name ids bodies)]
+    [(tea-pdefine name ids bodies)
+     (tea-pdefine->js name ids bodies)]
     [(tea-symbol value)
      (tea-symbol->js value)]
     [(tea-number value)
@@ -23,7 +23,7 @@
      (tea-let->js vars vals body)]
     [(tea-apply head tail)
      (tea-apply->js head tail)]
-    [(tea-identifier value)
+    [(tea-id value)
      (tea-id->js value)]
     [(tea-list value)
      (tea-list->js value)]))
@@ -44,7 +44,7 @@
   (jvdef (tea-id->js* name)
          (tea-defexp->js value)))
 
-(define (tea-proc-define->js name ids bodies)
+(define (tea-pdefine->js name ids bodies)
   (jfdef (tea-id->js* name)
          (tea-ids->js* ids)
          (tea-defexp->js/return-last bodies)))
@@ -81,10 +81,10 @@
   (jid value))
 
 (define (tea-ids->js* tea-ids)
-  (map (lambda (tea-id) (jid (tea-identifier-vale tea-id))) tea-ids))
+  (map (lambda (tea-id) (jid (tea-id-value tea-id))) tea-ids))
 
 (define (tea-id->js* tea-id)
-  (jid (tea-identifier-value tea-id)))
+  (jid (tea-id-value tea-id)))
 
 (define (tea-list->js value)
   (jarray (tea-defexps->js value)))
