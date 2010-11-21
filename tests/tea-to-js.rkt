@@ -2,14 +2,14 @@
 (require "../parser.rkt")
 (require "../js-data.rkt")
 (require "../tea-to-js.rkt")
-(require rackunit "../scheme-to-js.rkt")
+(require rackunit "../tea-to-js.rkt")
 
 (define (to-js sexp) (tea-defexp->js (parse-tea-defexp sexp)))
 (define sa string-append)
 
-(define scheme-to-js-ts
+(define tea-to-js-ts
   (test-suite
-   "tests for scheme-to-js.rkt"
+   "tests for tea-to-js.rkt"
    (test-case
     "numbers"
     (check-equal? (to-js '3) (jnumber 3))
@@ -96,4 +96,4 @@
 
 (require rackunit/text-ui)
 
-(run-tests scheme-to-js-ts)
+(run-tests tea-to-js-ts)
