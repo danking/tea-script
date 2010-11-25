@@ -47,6 +47,7 @@
   (let ([chars (string->list (symbol->string id))])
     (string->symbol (list->string (map sanitize-char chars)))))
 
+;; try to avoid a many-to-one relationship in char-map
 (define char-map
   '([#\- . #\_]
     [#\+ . #\a]
@@ -55,7 +56,7 @@
     [#\= . #\e]
     [#\& . #\n]
     [#\^ . #\c]
-    [#\% . #\p]
+    [#\% . #\r]
     [#\# . #\h]
     [#\@ . #\t]
     [#\! . #\b]
@@ -63,7 +64,8 @@
     [#\. . #\_]
     [#\< . #\l]
     [#\> . #\g]
-    [#\: . #\_]))
+    [#\: . #\_]
+    [#\? . #\p]))
 
 ;; bad-id? : Symbol -> Boolean
 (define (bad-id? str)
