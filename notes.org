@@ -12,16 +12,16 @@ Failures
  - [X] No support for `if' in tea
  - [X] No support for `let' in tea
  - [ ] JS Expand does not allow reassignment of primitive operator identifiers
+ - [ ] primops become identifiers which aren't bound in top-level JS
+ - [ ] make-uid does not concern itself with Unicode
 
-Goals for Monday
+Goals for Friday
  - [ ] support for tea `error' (and JS `exception')
- - [ ] proper translation of `+' etc. to JS
- - [ ] Gensym to handle non-JS allowed variable names
- - [ ] Gensym variable names must align one to one to symbols of the same
-       textual representation
+ - [X] proper translation of `+' etc. to JS
+ - [X] Gensym to handle non-JS allowed variable names
  - [ ] complete support for the `letrec' form
  - [ ] complete support for the `cond' form
- - [ ] runtime tests (compile into JS and then run in a JS interpeter)
+ - [X] runtime tests (compile into JS and then run in a JS interpeter)
 
 
 
