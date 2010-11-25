@@ -95,37 +95,3 @@
       result)))
 (define (accum proc acc ls)
   (map (stateful-proc acc proc) ls))
-
-(require rackunit)
-
-;; (check-equal? (gather-environment (parse '(let [(x 3)] x)))
-;;               '((x)))
-;; (check-equal? (gep '(define x 3))
-;;               '((x)))
-;; (check-equal? (gep '(let ([x 3])
-;;                       (let ([x 5])
-;;                         (let ([y 10])
-;;                           x))))
-;;               '((y) (x) (x)))
-;; (check-equal? (gep '(let ([x 3] [y 4] [z 5])
-;;                       (let ([z 3]))))
-;;               '((z) (x y z)))
-
-(check-equal? (sanitize-env '((foo-bar_) (foo-bar-)))
-              '((foo_bar_0) (foo_bar_1)))
-(check-equal? (sanitize-env '((foo-bar_) (foo-bar_)))
-              '((foo_bar_0) (foo_bar_0)))
-(check-equal? (sanitize-env '((foo-bar_ foo-bar-)))
-              '((foo_bar_0 foo_bar_1)))
-;; this test case depends on not changing "clean" ids, which currently
-;; isn't supported because I haven't built the infrastructure 
-(check-equal? (sanitize-env '((foo_bar_)
-                              (foo-bar_)
-                              (foo_bar- foo_bar_ foo-bar_)))
-              '((foo_bar_)
-                (foo_bar_0)
-                (foo_bar_1 foo_bar_ foo_bar_0)))
-
-(require rackunit/text-ui)
-
-;(run-tests)
