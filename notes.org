@@ -1,10 +1,11 @@
 Features
  - [ ] BigNums
- - [X] Bracket operator (array access, hash access)
+ - [ ] Bracket operator (array access, hash access)
  - [X] a JOp struct that fathers all the primitive operations
  - [ ] require/provide?
- - [ ] it would be super neat to have a single file that could run any
+ - [X] it would be super neat to have a single file that could run any
        combination of tests
+ - [ ] prim ops should probably compile straight to JS
 
 Optimizations
 
@@ -28,7 +29,7 @@ Goals for Friday
 
 How will I translate + and other operators?
   (+ 1 2)   => (1 + 2)
-  (+ 1 2 3) => (1 + 2 + 3)
+  (+ 1 2 3) => ((1 + 2) + 3)
   +         => ???
 
     maybe,
