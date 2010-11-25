@@ -6,11 +6,11 @@
     [(_ args ...) (struct args ... #:transparent)]))
 
 (tstruct tea-define (name value))
-(tstruct tea-pdefine (name ids bodies))
+(tstruct tea-pdefine (name ids body))
 (tstruct tea-symbol (value))
 (tstruct tea-number (value))
 (tstruct tea-string (value))
-(tstruct tea-lambda (args bodies))
+(tstruct tea-lambda (args body))
 (tstruct tea-if     (c t f))
 (tstruct tea-let    (vars vals body))
 (tstruct tea-apply  (head tail))
@@ -39,7 +39,7 @@
 ;;                            [ListOf Tea-Expression])
 
 ;; a Tea-Apply  is a (tea-apply Tea-Expression
-;;                              Tea-Expression)
+;;                              [ListOf Tea-Expression])
 
 ;; a Tea-Identifier is a (tea-identifier Symbol)
 
