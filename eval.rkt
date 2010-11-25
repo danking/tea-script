@@ -32,4 +32,3 @@
            (string-append lines "\n" line))
          ""
          lines))
-
