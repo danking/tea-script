@@ -30,24 +30,5 @@
   (map (lambda (exp) (sanitize-exp* exp)) exps))
 
 (define (sanitize-exp* exp)
-  (match exp
-    [(tea-define name value) (tea-define (sanitize-tea-id name)
-                                         (sanitize-exp* value))]
-    [(tea-pdefine name ids body) (tea-pdefine (sanitize-tea-id name)
-                                              (sanitize-tea-ids ids)
-                                              (sanitize-exps* body))]
-    [(or (tea-symbol value)
-         (tea-number value)
-         (tea-string value)) exp]
-    [(tea-lambda args body) (tea-lambda (sanitize-tea-ids args)
-                                        (sanitize-exps* body))]
-    [(tea-if c t f) (tea-if (sanitize-exp* c)
-                            (sanitize-exp* t)
-                            (sanitize-exp* f))]
-    [(tea-let vars vals body) (tea-let (sanitize-tea-ids vars)
-                                       (sanitize-exps* vals)
-                                       (sanitize-exps* body))]
-    [(tea-apply head tail) (tea-apply (sanitize-exp* head)
-                                      (sanitize-exps* tail))]
-    [(tea-id value) (sanitize-tea-id exp)]
-    [(tea-list value) (tea-list (sanitize-exps* value))]))
+  (match-tea exp sanitize-exp* sanitize-tea-id
+    [(tea-id value) (sanitize-tea-id exp)]))
