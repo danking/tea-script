@@ -3,7 +3,7 @@
 (provide expand-js)
 
 (define (expand-js jstatement)
-  (match-js jstatement expand-js expand-jid
+  (match-js jstatement expand-js (lambda (x) x)
     [(japply exp args) (expand-japply exp args)]))
 
 (define (expand-jss jstatements)
@@ -24,7 +24,7 @@
                 (if (singleton-or-2tuple? args)
                     (jprimop v (expand-jss args))
                     (expand-plus/minus v (expand-jss args)))]
-               [_ (japply (expand-jid op) (expand-jss args))])]
+               [_ (japply op (expand-jss args))])]
     [_ (japply (expand-js op) (expand-jss args))]))
 
 (define (expand-plus/minus op args)
