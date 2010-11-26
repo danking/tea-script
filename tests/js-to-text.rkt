@@ -50,21 +50,13 @@
                   (sa "function baz (x, y, z) {\n"
                       "  y;\n"
                       "  return x;\n"
-                      "};\n"))
-    (check-equal? (jt (jfdef (jid 'foo-bar_)
-                             (list (jid 'x))
-                             (list (jreturn (jid 'x)))))
-                  '???))
+                      "};\n")))
    (test-case
     "JS Identifiers"
     (check-equal? (jt (jid 'x))
                   "x;\n")
     (check-equal? (jt (jid 'foo_bar))
-                  "foo_bar;\n")
-    (check-equal? (jt (jid 'foo-bar_))
-                  '???)
-    (check-not-equal? (jt (jid 'foo-bar_))
-                      (jt (jid 'foo_bar-))))
+                  "foo_bar;\n"))
    (test-case
     "JS Bool"
     (check-equal? (jt (jbool true))

@@ -17,8 +17,7 @@
 
    (test-case
     "id"
-    (check-equal? (to-js 'foo) (jid 'foo))
-    (check-equal? (to-js 'foo-bar) '???))
+    (check-equal? (to-js 'foo) (jid 'foo)))
 
    (test-case
     "strings"
