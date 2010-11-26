@@ -12,7 +12,7 @@
     [(list 'define (list name ids ...) bodies ..1)
      (tea-pdefine (parse-tea-id name)
                   (parse-tea-ids ids)
-                  (parse-tea-exps bodies))]
+                  (map parse-tea-defexp bodies))]
     [(list 'define id body) (tea-define (parse-tea-id id)
                                         (parse-tea-exp body))]
     [_ (error 'lexer "expected ~s to be a definition")]))
@@ -30,14 +30,22 @@
     [(list 'lambda (list ids ...) bodies ..1)
      (tea-lambda (parse-tea-ids ids)
                  (parse-tea-exps bodies))]
-    [(list 'let (list (list ids vals) ...) body ...)
-     (tea-let (parse-tea-ids ids)
-              (parse-tea-exps vals)
-              (parse-tea-exps body))]
     [(list 'if c t f)
      (tea-if (parse-tea-exp c)
              (parse-tea-exp t)
              (parse-tea-exp f))]
+    [(list 'cond (list preds exps) ...)
+     (tea-cond (parse-tea-exps preds)
+               (parse-tea-exps exps))]
+    [(list (and type (or 'let 'let* 'letrec))
+           (list (list ids vals) ...)
+           body ...)
+     ((cond [(eq? type 'let) tea-let]
+            [(eq? type 'let*) tea-let*]
+            [(eq? type 'letrec) tea-letrec])
+      (parse-tea-ids ids)
+      (parse-tea-exps vals)
+      (parse-tea-exps body))]
     [(list head tail ...)
      (tea-apply  (parse-tea-exp head)
                  (parse-tea-exps tail))]
