@@ -30,5 +30,4 @@
   (map (lambda (exp) (sanitize-exp* exp)) exps))
 
 (define (sanitize-exp* exp)
-  (match-tea exp sanitize-exp* sanitize-tea-id
-    [(tea-id value) (sanitize-tea-id exp)]))
+  (match-tea exp sanitize-exp* sanitize-tea-id))
