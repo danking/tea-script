@@ -65,7 +65,7 @@
        (match-exp result-exp) ...
        (_ (js-dispatcher value exp-proc id-proc))))))
 
-;; js-dispatcher : JStatement [JExp -> JExp] [Symbol -> Symbol]
+;; js-dispatcher : JStatement [JExp -> JExp] [JId -> JId]
 (define (js-dispatcher jstatement exp-proc id-proc)
   (define (dispatch-jprim jprim)
     (match jprim

@@ -56,6 +56,8 @@
        (match-exp result-exp) ...
        (_ (tea-dispatcher value exp-proc id-proc))))))
 
+;; tea-dispatcher :
+;;   Tea-Expression [Tea-Expression -> Tea-Expression] [Tea-Id -> Tea-Id]
 (define (tea-dispatcher t exp-proc id-proc)
   (match t
     [(tea-define name value) (tea-define (id-proc name)
