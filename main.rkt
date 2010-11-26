@@ -3,7 +3,7 @@
          "tea-to-js.rkt"
          "js-expansions.rkt"
          "js-to-text.rkt"
-         "gather-env.rkt")
+         "sanitize-ids.rkt")
 (provide tea->js)
 
 (define (tea->js sexp)
