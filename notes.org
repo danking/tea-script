@@ -1,7 +1,8 @@
 Features
  - [ ] BigNums
  - [ ] Bracket operator (array access, hash access)
- - [ ] prim ops should probably compile straight to JS
+ - [ ] +,-,/,*, etc. should probably translate into their JS equivalent
+       primops instead of functions
  - [ ] require/provide?
  - [X] a JOp struct that fathers all the primitive operations
  - [X] it would be super neat to have a single file that could run any
