@@ -55,6 +55,37 @@
                           (tea-apply (tea-id 'y)
                                      (list (tea-number 4))))))
    (test-case
+    "cond"
+    (check-equal? (pt '(cond [(foo? bar) (+ baz 3)]
+                             [(qux? quux) (string-append quux "la-te-dah")]
+                             [else 'else!]))
+                  (tea-cond (list (tea-apply (tea-id 'foo?)
+                                             (list (tea-id 'bar)))
+                                  (tea-apply (tea-id 'qux?)
+                                             (list (tea-id 'quux))))
+                            (list (tea-apply (tea-id '+)
+                                             (list (tea-id 'baz)
+                                                   (tea-number 3)))
+                                  (tea-apply (tea-id 'string-append)
+                                             (list (tea-id 'quux)
+                                                   (tea-string "la-te-dah"))))
+                            (tea-symbol 'else!)))
+    (check-equal? (pt '(cond [(foo? bar) (+ baz 3)]
+                             [(qux? quux) (string-append quux "la-te-dah")]))
+                  (tea-cond (list (tea-apply (tea-id 'foo?)
+                                             (list (tea-id 'bar)))
+                                  (tea-apply (tea-id 'qux?)
+                                             (list (tea-id 'quux))))
+                            (list (tea-apply (tea-id '+)
+                                             (list (tea-id 'baz)
+                                                   (tea-number 3)))
+                                  (tea-apply (tea-id 'string-append)
+                                             (list (tea-id 'quux)
+                                                   (tea-string "la-te-dah"))))
+                            (tea-void)))
+        (check-equal? (pt '(cond))
+                      (tea-cond (list) (list) (tea-void))))
+   (test-case
     "let"
     (check-equal? (pt '(let [(x 3) (y 4)]
                          (+ x y)))
