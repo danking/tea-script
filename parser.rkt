@@ -35,8 +35,7 @@
              (parse-tea-exp t)
              (parse-tea-exp f))]
     [(list 'cond (list preds exps) ...)
-     (tea-cond (parse-tea-exps preds)
-               (parse-tea-exps exps))]
+     (parse-tea-cond preds exps)]
     [(list (and type (or 'let 'let* 'letrec))
            (list (list ids vals) ...)
            body ...)
@@ -57,6 +56,22 @@
 (define (parse-tea-id id)
   (if (symbol? id) (tea-id id)
       (error 'lexer "expected ~s to be an identifier" id)))
+
+(define (parse-tea-cond preds exps)
+  (if (and (not (empty? preds))
+           (eq? 'else (last preds)))
+      (tea-cond (parse-tea-exps (all-but-last preds))
+                (parse-tea-exps (all-but-last exps))
+                (parse-tea-exp (last exps)))
+      (tea-cond (parse-tea-exps preds)
+                (parse-tea-exps exps)
+                (tea-void))))
+
+(define (all-but-last ls)
+  (if (empty? (rest ls))
+      '()
+      (cons (first ls)
+            (all-but-last (rest ls)))))
 
 (define (parse-tea-data data)
   (map parse-tea-datum data))
