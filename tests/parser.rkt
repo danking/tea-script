@@ -125,7 +125,11 @@
                                                   (tea-symbol 'a)
                                                   (tea-symbol 'b)))
                                   (tea-string "c")
-                                  (tea-string "d")))))))
+                                  (tea-string "d")))))
+   (test-case
+    "raise"
+    (check-equal? (pt '(raise 3))
+                  (tea-raise (tea-number 3))))))
 
 (require rackunit/text-ui)
 
