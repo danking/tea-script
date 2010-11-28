@@ -24,7 +24,8 @@
            ((match js
               [(jdef name) jdef->text]
               [(jexp)      jexp->text]
-              [(jreturn v) jreturn->text])
+              [(jreturn v) jreturn->text]
+              [(jthrow v)  jthrow->text])
             js formatting)
            ";\n")))
 
@@ -143,6 +144,9 @@
 
 (define (jreturn->text jreturn formatting)
   (string-append "return " (jexp->text (jreturn-exp jreturn) formatting)))
+
+(define (jthrow->text jthrow formatting)
+  (string-append "throw " (jexp->text (jthrow-exp jthrow) formatting)))
 
 (define (indent formatting s)
   (string-append (string-repeat (formatting-depth formatting)
