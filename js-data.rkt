@@ -53,6 +53,8 @@
     (tstruct jlambda jexp (args body))
   ;; (jreturn JExp)
   (tstruct jreturn jstatement (exp))
+  ;; (jthrow JExp)
+  (tstruct jthrow jstatement (exp))
 
 ;; matches value according to the specified rules, just like match, but if
 ;; one of the js structs is left unspecified it will default to recursively
@@ -103,4 +105,5 @@
                                (map exp-proc args))]
     [(jlambda args body) (jlambda (map id-proc args)
                                   (map exp-proc body))]
-    [(jreturn exp) (jreturn (exp-proc exp))]))
+    [(jreturn exp) (jreturn (exp-proc exp))]
+    [(jthrow exp) (jthrow (exp-proc exp))]))
