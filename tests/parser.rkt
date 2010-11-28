@@ -64,6 +64,24 @@
                                             (list (tea-id 'x)
                                                   (tea-id 'y)))))))
    (test-case
+    "let*"
+    (check-equal? (pt '(let* [(x 3) (y 4)]
+                         (+ x y)))
+                  (tea-let* (list (tea-id 'x) (tea-id 'y))
+                            (list (tea-number 3) (tea-number 4))
+                            (list (tea-apply (tea-id '+)
+                                             (list (tea-id 'x)
+                                                   (tea-id 'y)))))))
+   (test-case
+    "letrec"
+    (check-equal? (pt '(letrec [(x 3) (y 4)]
+                         (+ x y)))
+                  (tea-letrec (list (tea-id 'x) (tea-id 'y))
+                              (list (tea-number 3) (tea-number 4))
+                              (list (tea-apply (tea-id '+)
+                                               (list (tea-id 'x)
+                                                     (tea-id 'y)))))))
+   (test-case
     "quoted lists"
     (check-equal? (pt ''(1 2 (3 4 (5 6) a b) "c" "d"))
                   (tea-list (list (tea-number 1)
