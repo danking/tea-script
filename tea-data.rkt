@@ -12,13 +12,15 @@
 (tstruct tea-string (value))
 (tstruct tea-lambda (args body))
 (tstruct tea-if     (c t f))
-(tstruct tea-cond   (preds exps))
+(tstruct tea-cond   (preds exps else))
 (tstruct tea-let    (vars vals body))
 (tstruct tea-let*   (vars vals body))
 (tstruct tea-letrec (vars vals body))
 (tstruct tea-apply  (head tail))
 (tstruct tea-id     (value))
 (tstruct tea-list   (value))
+(tstruct tea-raise  (value))
+(tstruct tea-void   ())
 
 ;; a Tea-Define is a (tea-define Tea-Identifier Tea-Expression)
 
@@ -35,7 +37,11 @@
 ;; a Tea-Lambda is a (tea-lambda [ListOf Tea-Identifier]
 ;;                               [ListOf Tea-Expression])
 
-;; a Tea-if     is a (tea-if Tea-Expression Tea-Expression Tea-Expression)
+;; a Tea-If     is a (tea-if Tea-Expression Tea-Expression Tea-Expression)
+
+;; a Tea-Cond   is a (tea-cond [ListOf Tea-Expression]
+;;                             [ListOf Tea-Expression]
+;;                             Tea-Expression)
 
 ;; a Tea-Let    is a (tea-let [ListOf Tea-Identifier]
 ;;                            [ListOf Tea-Expression]
@@ -47,6 +53,8 @@
 ;; a Tea-Identifier is a (tea-identifier Symbol)
 
 ;; a Tea-List   is a (tea-list [ListOf Tea-Expression])
+
+;; a Tea-Void   is a (tea-void)
 
 (define-syntax match-tea
   (syntax-rules (match-tea)
@@ -73,8 +81,9 @@
     [(tea-if c t f) (tea-if (exp-proc c)
                             (exp-proc t)
                             (exp-proc f))]
-    [(tea-cond preds exps) (tea-cond (map exp-proc preds)
-                                     (map exp-proc exps))]
+    [(tea-cond preds exps else) (tea-cond (map exp-proc preds)
+                                          (map exp-proc exps)
+                                          (exp-proc else))]
     [(tea-let vars vals body) (tea-let (map id-proc vars)
                                        (map exp-proc vals)
                                        (map exp-proc body))]
@@ -87,4 +96,6 @@
     [(tea-apply head tail) (tea-apply (exp-proc head)
                                       (map exp-proc tail))]
     [(tea-id value) (id-proc t)]
-    [(tea-list value) (tea-list (exp-proc value))]))
+    [(tea-list value) (tea-list (exp-proc value))]
+    [(tea-raise value) (tea-raise (exp-proc value))]
+    [(tea-void) t]))
