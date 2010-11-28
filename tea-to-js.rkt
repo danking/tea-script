@@ -1,6 +1,6 @@
 #lang racket
-(require "tea-data.rkt")
-(require "js-data.rkt")
+(require "tea-data.rkt"
+         "js-data.rkt")
 (provide tea-defexp->js)
 
 (define (tea-defexp->js tea-exp)
