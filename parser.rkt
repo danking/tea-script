@@ -45,6 +45,8 @@
       (parse-tea-ids ids)
       (parse-tea-exps vals)
       (parse-tea-exps body))]
+    [(list 'raise value)
+     (tea-raise (parse-tea-exp value))]
     [(list head tail ...)
      (tea-apply  (parse-tea-exp head)
                  (parse-tea-exps tail))]
