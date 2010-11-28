@@ -76,9 +76,9 @@
       [(jprimop op args) (jprimop op (map exp-proc args))]
       [(jbracket object property) (jbracket (exp-proc object)
                                             property)]
-      [(jcond c t f) (jprimop (exp-proc c)
-                              (exp-proc t)
-                              (exp-proc f))]
+      [(jcond c t f) (jcond (exp-proc c)
+                            (exp-proc t)
+                            (exp-proc f))]
       [(jcomma exps) (jcomma (map exp-proc exps))]
       [(jin property object) (jin (exp-proc property)
                                   (exp-proc object))]
