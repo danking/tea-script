@@ -1,27 +1,29 @@
 Features
  - [ ] BigNums
  - [ ] Bracket operator (array access, hash access)
- - [X] a JOp struct that fathers all the primitive operations
+ - [ ] prim ops should probably compile straight to JS
  - [ ] require/provide?
+ - [X] a JOp struct that fathers all the primitive operations
  - [X] it would be super neat to have a single file that could run any
        combination of tests
- - [ ] prim ops should probably compile straight to JS
 
 Optimizations
 
 Failures
- - [X] No support for `if' in tea
- - [X] No support for `let' in tea
  - [ ] JS Expand does not allow reassignment of primitive operator identifiers
  - [ ] primops become identifiers which aren't bound in top-level JS
+       this is due to sanitize-js.rkt
  - [ ] make-uid does not concern itself with Unicode
+ - [ ] I don't have any tests for js-data.rkt or tea-data.rkt's dispatchers
+ - [X] No support for `let' in tea
+ - [X] No support for `if' in tea
 
 Goals for Friday
- - [ ] support for tea `error' (and JS `exception')
- - [X] proper translation of `+' etc. to JS
+ - [X] support for tea `raise' (and JS `throw')
+ - [X] complete support for the `letrec' form
+ - [X] complete support for the `cond' form
  - [X] Gensym to handle non-JS allowed variable names
- - [ ] complete support for the `letrec' form
- - [ ] complete support for the `cond' form
+ - [X] proper translation of `+' etc. to JS
  - [X] runtime tests (compile into JS and then run in a JS interpeter)
 
 
