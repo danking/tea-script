@@ -19,26 +19,36 @@
      (tea-lambda->js args bodies)]
     [(tea-if c t f)
      (tea-if->js c t f)]
+    [(tea-cond conditions results else)
+     (tea-cond->js conditions results else)]
     [(tea-let vars vals body)
      (tea-let->js vars vals body)]
+    [(tea-let* vars vals body)
+     (tea-let*->js vars vals body)]
+    [(tea-letrec vars vals body)
+     (tea-letrec->js vars vals body)]
     [(tea-apply head tail)
      (tea-apply->js head tail)]
     [(tea-id value)
      (tea-id->js value)]
     [(tea-list value)
-     (tea-list->js value)]))
+     (tea-list->js value)]
+    [(tea-raise value)
+     (tea-raise->js value)]
+    [(tea-void)
+     (jnull)]))
 
 (define (tea-defexps->js tea-exps)
   (map tea-defexp->js tea-exps))
 
-;; tea-defexp->js/return-last : [ListOf Tea-Exp] -> [ListOf JS-Exp]
-(define (tea-defexp->js/return-last exps)
+;; tea-defexps->js/return-last : [ListOf Tea-Exp] -> [ListOf JS-Exp]
+(define (tea-defexps->js/return-last exps)
   (cond [(empty? exps) '()]
         [(empty? (rest exps))
          (cons (jreturn (tea-defexp->js (first exps))) '())]
         [else
          (cons (tea-defexp->js (first exps))
-               (tea-defexp->js/return-last (rest exps)))]))
+               (tea-defexps->js/return-last (rest exps)))]))
 
 (define (tea-define->js name value)
   (jvdef (tea-id->js* name)
@@ -47,7 +57,7 @@
 (define (tea-pdefine->js name ids bodies)
   (jfdef (tea-id->js* name)
          (tea-ids->js* ids)
-         (tea-defexp->js/return-last bodies)))
+         (tea-defexps->js/return-last bodies)))
 
 (define (tea-symbol->js value)
   (jnew (jid '__tea_quote)
@@ -61,21 +71,51 @@
 
 (define (tea-lambda->js args body)
   (jlambda (tea-ids->js* args)
-           (tea-defexp->js/return-last body)))
+           (tea-defexps->js/return-last body)))
 
 (define (tea-if->js c t f)
   (jcond (tea-defexp->js c)
          (tea-defexp->js t)
          (tea-defexp->js f)))
 
+(define (tea-cond->js conditions results else)
+  (foldr (lambda (condition result jcond-expr)
+           (jcond (tea-defexp->js condition)
+                  (tea-defexp->js result)
+                  jcond-expr))
+         (tea-defexp->js else)
+         conditions
+         results))
+
 (define (tea-let->js vars vals body)
   (japply (jlambda (tea-ids->js* vars)
-                   (tea-defexp->js/return-last body))
+                   (tea-defexps->js/return-last body))
           (tea-defexps->js vals)))
+
+(define (tea-let*->js vars vals body)
+  (tea-defexp->js (foldr (lambda (var val tea-expr)
+                           (tea-let (list var) (list val) (if (cons? tea-expr)
+                                                              tea-expr
+                                                              (list tea-expr))))
+                         body
+                         vars
+                         vals)))
+
+(define (tea-letrec->js vars vals body)
+  (japply (jlambda (list)
+                   (append (map (lambda (var val)
+                                  (jvdef (tea-defexp->js var)
+                                         (tea-defexp->js val)))
+                                vars vals)
+                           (tea-defexps->js/return-last body)))
+          (list)))
 
 (define (tea-apply->js head tail)
   (japply (tea-defexp->js head)
           (tea-defexps->js tail)))
+
+(define (tea-raise->js value)
+  (jthrow (tea-defexp->js value)))
 
 (define (tea-id->js value)
   (jid value))
