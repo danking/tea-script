@@ -233,7 +233,13 @@
                                         (list (jreturn (jid 'bar))))))
                   (sa "return (function (x) {\n"
                       "  return bar;\n"
-                      "});\n")))))
+                      "});\n")))
+   (test-case
+    "JS Throw"
+    (check-equal (jt (jthrow (jnumber 3)))
+                 "throw 3;\n")
+    (check-equal (jt (jthrow (jstring "oh noes!")))
+                 "throw \"oh noes!\";\n"))))
 
 (require rackunit/text-ui)
 
