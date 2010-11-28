@@ -54,7 +54,80 @@
                   (jlambda (list (jid 'x) (jid 'y) (jid 'z))
                            (list (jreturn (jstring "foo"))))))
 
+   (test-case
+    "if"
+    (check-equal? (to-js '(if (even? x) (foo x) (bar x)))
+                  (jcond (japply (jid 'even?)
+                                 (list (jid 'x)))
+                         (japply (jid 'foo)
+                                 (list (jid 'x)))
+                         (japply (jid 'bar)
+                                 (list (jid 'x))))))
 
+   (test-case
+    "cond"
+    (check-equal? (to-js '(cond [(even? x) (foo x)]
+                                [(odd? x) (bar x)]
+                                [else 0]))
+                  (jcond (japply (jid 'even?)
+                                 (list (jid 'x)))
+                         (japply (jid 'foo)
+                                 (list (jid 'x)))
+                         (jcond (japply (jid 'odd?)
+                                        (list (jid 'x)))
+                                (japply (jid 'bar)
+                                        (list (jid 'x)))
+                                (jnumber 0))))
+    (check-equal? (to-js '(cond [(even? x) 0]))
+                  (jcond (japply (jid 'even?)
+                                 (list (jid 'x)))
+                         (jnumber 0)
+                         (jnull)))
+    (check-equal? (to-js '(cond))
+                  (jnull)))
+
+   (test-case
+    "let"
+    (check-equal? (to-js '(let ((foo 3) (bar "baz"))
+                            (sum foo bar)))
+                  (japply (jlambda (list (jid 'foo)
+                                         (jid 'bar))
+                                   (list (jreturn
+                                          (japply (jid 'sum)
+                                                  (list (jid 'foo)
+                                                        (jid 'bar))))))
+                          (list (jnumber 3) (jstring "baz")))))
+
+   (test-case
+    "let*"
+    (check-equal? (to-js '(let* ((foo 3) (bar foo))
+                            (sum foo bar)))
+                  (japply (jlambda (list (jid 'foo))
+                                   (list
+                                    (jreturn
+                                     (japply (jlambda (list (jid 'bar))
+                                                      (list
+                                                       (jreturn
+                                                        (japply (jid 'sum)
+                                                                (list
+                                                                 (jid 'foo)
+                                                                 (jid 'bar))))))
+                                             (list (jid 'foo))))))
+                          (list (jnumber 3)))))
+
+   (test-case
+    "letrec"
+    (check-equal? (to-js '(letrec ((foo (lambda () foo)) (bar foo))
+                            (bar)))
+                  (japply (jlambda (list)
+                                   (list (jvdef (jid 'foo)
+                                                (jlambda (list)
+                                                         (list
+                                                          (jreturn
+                                                           (jid 'foo)))))
+                                         (jvdef (jid 'bar) (jid 'foo))
+                                         (jreturn (japply (jid 'bar) (list)))))
+                          (list))))
 
    (test-case
     "apply"
@@ -68,6 +141,11 @@
                           (list (japply (jid 'bar)
                                         (list (jid 'baz)))
                                 (jid 'qux)))))
+
+   (test-case
+    "raise"
+    (check-equal? (to-js '(raise "no good!"))
+                  (jthrow (jstring "no good!"))))
 
    (test-case
     "variable definition"
