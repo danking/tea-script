@@ -92,7 +92,7 @@
     [(jin property object) (format "(~a in ~a)"
                                    (jexp->text property formatting)
                                    (jexp->text object formatting))]
-    [(jinstof object type) (format "(~a instanceOf ~a)"
+    [(jinstof object type) (format "(~a instanceof ~a)"
                                    (jexp->text object formatting)
                                    (jexp->text type formatting))]
     [(jtypeof exp) (format "(typeof ~a)" (jexp->text exp formatting))]

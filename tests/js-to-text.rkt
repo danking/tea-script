@@ -175,9 +175,9 @@
     (check-equal? (jt (jin (jstring "property") (jid 'myObject)))
                   "(\"property\" in myObject);\n"))
    (test-case
-    "JS instanceOf Operator"
+    "JS instanceof Operator"
     (check-equal? (jt (jinstof (jid 'foo) (jid 'String)))
-                  "(foo instanceOf String);\n"))
+                  "(foo instanceof String);\n"))
    (test-case
     "JS typeof Operator"
     (check-equal? (jt (jtypeof (jid 'bar)))
