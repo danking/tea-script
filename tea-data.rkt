@@ -99,3 +99,39 @@
     [(tea-list value) (tea-list (exp-proc value))]
     [(tea-raise value) (tea-raise (exp-proc value))]
     [(tea-void) t]))
+
+(define (tea-accumulator t accumulator exp-proc id-proc)
+  (match t
+    [(tea-define name value) (accumulator (list (id-proc name)
+                                                (exp-proc value)))]
+    [(tea-pdefine name ids body) (accumulator (cons (id-proc name)
+                                                    (append
+                                                     (map id-proc ids)
+                                                     (map exp-proc body))))]
+    [(or (tea-symbol value)
+         (tea-number value)
+         (tea-string value)) (accumulator '())]
+    [(tea-lambda args body) (accumulator (append (map id-proc args)
+                                                 (map exp-proc body)))]
+    [(tea-if c t f) (accumulator (list (exp-proc c)
+                                       (exp-proc t)
+                                       (exp-proc f)))]
+    [(tea-cond preds exps else) (accumulator (list (exp-proc else)
+                                                   (append
+                                                    (map exp-proc preds)
+                                                    (map exp-proc exps))))]
+    [(tea-let vars vals body) (accumulator (append (map id-proc vars)
+                                                   (map exp-proc vals)
+                                                   (map exp-proc body)))]
+    [(tea-let* vars vals body) (accumulator (append (map id-proc vars)
+                                                    (map exp-proc vals)
+                                                    (map exp-proc body)))]
+    [(tea-letrec vars vals body) (accumulator (append (map id-proc vars)
+                                                      (map exp-proc vals)
+                                                      (map exp-proc body)))]
+    [(tea-apply head tail) (accumulator (list* (exp-proc head)
+                                               (map exp-proc tail)))]
+    [(tea-id value) (accumulator (list (id-proc t)))]
+    [(tea-list value) (accumulator (list (exp-proc value)))]
+    [(tea-raise value) (accumulator (list (exp-proc value)))]
+    [(tea-void) (accumulator '())]))
