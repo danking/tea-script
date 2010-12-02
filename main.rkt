@@ -9,7 +9,7 @@
 ;; tea->js : SExp
 (define (tea->js sexp)
   (jstatement->text
-   (expand-js (tea-defexp->js (sanitize-exp (parse-tea-defexp sexp))))))
+   (expand-js (tea-defexp->js (sanitize-ids (parse-tea-defexp sexp))))))
 
 ;; tea-program->js-program : [ListOf SExp]
 (define (tea-program->js-program sexps)
