@@ -7,3 +7,4 @@
 (require "integration.rkt")
 (require "at-runtime.rkt")
 (require "string-utilities.rkt")
+(display (port->string (first (process "rhino environment.js"))))
