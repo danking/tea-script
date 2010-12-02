@@ -236,10 +236,10 @@
                       "});\n")))
    (test-case
     "JS Throw"
-    (check-equal (jt (jthrow (jnumber 3)))
-                 "throw 3;\n")
-    (check-equal (jt (jthrow (jstring "oh noes!")))
-                 "throw \"oh noes!\";\n"))))
+    (check-equal? (jt (jthrow (jnumber 3)))
+                  "throw 3;\n")
+    (check-equal? (jt (jthrow (jstring "oh noes!")))
+                  "throw \"oh noes!\";\n"))))
 
 (require rackunit/text-ui)
 
