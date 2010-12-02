@@ -1,7 +1,7 @@
 #lang racket
-(require "../parser.rkt")
-(require "../tea-data.rkt")
-(require rackunit "../parser.rkt")
+(require "../tea-data.rkt"
+         rackunit
+         "../parser.rkt")
 
 (define pt parse-tea-defexp)
 
