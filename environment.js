@@ -97,6 +97,6 @@ function EnvironmentModule(toplevel) {
   toplevel.ormap = ormap;
 
   toplevel.__tea_quote = __tea_quote;
-  toplevel.symbolp = symbolp0;
-  toplevel.symbolep = symbolep0;
+  toplevel.symbolp0 = symbolp0;
+  toplevel.symbolep0 = symbolep0;
 }
