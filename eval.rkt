@@ -8,27 +8,16 @@
 ;; the second string is the full output of the command, check this if the first
 ;; doesn't make any sense
 (define (tea-eval sexp)
-  (let ([lines (read-all-lines (first (process
-                                       (format
-                                        (string-append "echo '~a' | "
-                                                       "rhino 2>&1 | "
-                                                       "sed 's/js> //'")
-                                        (tea->js sexp)))))])
-    (list (lines->output lines)
-          (lines->string lines))))
-
-(define (read-all-lines port)
-  (let [(line (read-line port))]
-   (cond [(eof-object? line) '()]
-         [else (cons line (read-all-lines port))])))
-
-(define (lines->output lines)
-  (if (>= (length lines) 3)
-      (third (reverse lines))
-      (last lines)))
-
-(define (lines->string lines)
-  (foldl (lambda (line lines)
-           (string-append lines "\n" line))
-         ""
-         lines))
+  (let* ([rhino-process (process "rhino")]
+         [rhino-stderr (fourth rhino-process)]
+         [rhino-stdin (second rhino-process)])
+    (write-string (string-append
+                   ;; BROKEN: should refernece local file's
+                   ;; directory
+                   (file->string "environment.js")
+                   "\nEnvironmentModule(this);\n\n"
+                   (tea->js sexp))
+                  rhino-stdin)
+    (flush-output rhino-stdin)
+    (read-line rhino-stderr) ; throw away the header
+    (read-line rhino-stderr)))
