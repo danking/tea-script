@@ -18,17 +18,26 @@
                      (tea->js sexp))
                     in)
       (flush-output in)
-      (close-output-port in)
-      (read-line err)                   ; throw away header
-      (read-line err))
+      ; throw away 5 header lines
+      ;; (read-line out)
+      ;; (read-line out)
+      ;; (read-line out)
+      ;; (read-line out)
+      ;; (read-line out)
+      ; read the output
+      (display (read-string 10000 err)))
     "/usr/bin/env"
-    "rhino")))
+    "nodejs-repl")))
 
 (define (get-output-value string)
-  (let ([prefix "(js|  )> "]
-        [value "[^> ].*"])
-    (last (regexp-match (string-append "(" prefix ")+" "(" value ")$")
-                        string))))
+  (if (eof-object? string)
+      (error 'tea-eval "no output found from js interpreter")
+      string
+      ;; (let ([prefix "(js|  )> "]
+      ;;       [value "[^> ].*"])
+      ;;   (regexp-match (string-append "(" prefix ")+" "(" value ")$")
+      ;;                 string))
+      ))
 
 (define-syntax auto-cleanup-process
   (syntax-rules ()
