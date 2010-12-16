@@ -32,6 +32,17 @@ function EnvironmentModule(toplevel) {
       args[0] / m0.apply(this, args.slice(1));
   }
 
+  function cons (left, right) {
+    return [left].concat(right);
+  }
+
+  function first (array) {
+    return array[1];
+  }
+
+  function rest (array) {
+    return array.slice(1);
+  }
 
   function foldl (procedure, base, list) {
     var result = base;
@@ -88,6 +99,10 @@ function EnvironmentModule(toplevel) {
   toplevel._0 = _0;
   toplevel.m0 = m0;
   toplevel.d0 = d0;
+
+  toplevel.cons = cons;
+  toplevel.first = first;
+  toplevel.rest = rest;
 
   toplevel.foldl = foldl;
   toplevel.foldr = foldr;
