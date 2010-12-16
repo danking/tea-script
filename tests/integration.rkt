@@ -37,7 +37,11 @@
     (test-case
      "list literals"
      (check-equal? (tea->js ''(1 2 3))
-                   "[1, 2, 3];\n")))
+                   "[1, 2, 3];\n"))
+    (test-case
+     "function application"
+     (check-equal? (tea->js '(foldl cons '() '(1 2 3 4 5)))
+                   "foldl(cons, [], [1, 2, 3, 4, 5]);\n")))
    (test-suite
     "program integration tests"
     (test-case
