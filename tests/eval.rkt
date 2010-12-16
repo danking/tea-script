@@ -1,7 +1,7 @@
 #lang racket
 (require rackunit
          "../eval.rkt")
-(provide at-runtime-ts)
+(provide eval-ts)
 
 (define-syntax check-runtime
   (syntax-rules ()
@@ -11,7 +11,7 @@
                                       (second output)))]))
 
 ;; symbols
-(define at-runtime-ts
+(define eval-ts
  (test-suite
   "runtime tests"
   (test-case
@@ -26,4 +26,4 @@
 
 (require rackunit/text-ui)
 
-(run-tests at-runtime-ts)
+(run-tests eval-ts)
