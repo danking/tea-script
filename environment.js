@@ -54,7 +54,7 @@ function EnvironmentModule(toplevel) {
 
   function foldr (procedure, base, list) {
     var result = base;
-    for(var i = list.length; i > 0; i--) {
+    for(var i = list.length - 1; i >= 0; i--) {
       result = procedure(list[i], result);
     }
     return result;
