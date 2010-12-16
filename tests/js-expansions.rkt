@@ -58,7 +58,8 @@
    (check-no-change 'a
                     "foo"
                     3
-                    ''a))
+                    ''a
+                    ''(1 2 3)))
   (test-case
    "language forms"
    (check-no-change '(define x 3)
