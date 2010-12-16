@@ -15,7 +15,7 @@
                   (map parse-tea-defexp bodies))]
     [(list 'define id body) (tea-define (parse-tea-id id)
                                         (parse-tea-exp body))]
-    [_ (error 'lexer "expected ~s to be a definition")]))
+    [_ (error 'parser "expected ~s to be a definition")]))
 
 (define (parse-tea-exps exps)
   (map parse-tea-exp exps))
