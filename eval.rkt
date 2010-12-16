@@ -26,7 +26,7 @@
 
 (define (get-output-value string)
   (let ([prefix "(js|  )> "]
-        [value "[^>].*"])
+        [value "[^> ].*"])
     (last (regexp-match (string-append "(" prefix ")+" "(" value ")$")
                         string))))
 
