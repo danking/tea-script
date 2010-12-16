@@ -33,7 +33,11 @@
                                (if (predicate x) 3 (f (sub1 x)))))
                    (sa "function f (x) {\n"
                        "  return (predicate(x) ? 3 : f(sub1(x)));\n"
-                       "};\n"))))
+                       "};\n")))
+    (test-case
+     "list literals"
+     (check-equal? (tea->js ''(1 2 3))
+                   "[1, 2, 3];\n")))
    (test-suite
     "program integration tests"
     (test-case
