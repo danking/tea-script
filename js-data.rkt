@@ -71,7 +71,7 @@
 (define (js-dispatcher jstatement exp-proc id-proc)
   (define (dispatch-jprim jprim)
     (match jprim
-      [(jarray v) (jarray (exp-proc v))]
+      [(jarray v) (jarray (map exp-proc v))]
       [_ jprim]))
   (define (dispatch-jop jop)
     (match jop

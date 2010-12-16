@@ -96,7 +96,7 @@
     [(tea-apply head tail) (tea-apply (exp-proc head)
                                       (map exp-proc tail))]
     [(tea-id value) (id-proc t)]
-    [(tea-list value) (tea-list (exp-proc value))]
+    [(tea-list value) (tea-list (map exp-proc value))]
     [(tea-raise value) (tea-raise (exp-proc value))]
     [(tea-void) t]))
 
@@ -132,6 +132,6 @@
     [(tea-apply head tail) (accumulator (list* (exp-proc head)
                                                (map exp-proc tail)))]
     [(tea-id value) (accumulator (list (id-proc t)))]
-    [(tea-list value) (accumulator (list (exp-proc value)))]
+    [(tea-list value) (accumulator (map exp-proc value))]
     [(tea-raise value) (accumulator (list (exp-proc value)))]
     [(tea-void) (accumulator '())]))
