@@ -5,6 +5,6 @@
 (require "js-expansions.rkt")
 (require "js-to-text.rkt")
 (require "integration.rkt")
-(require "at-runtime.rkt")
+(require "eval.rkt")
 (require "string-utilities.rkt")
 (display (port->string (first (process "rhino environment.js"))))
