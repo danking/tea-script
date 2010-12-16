@@ -5,6 +5,7 @@ Features
 Failures
  - [ ] make-uid does not concern itself with Unicode - it might not need to...
  - [ ] I don't have any tests for js-data.rkt or tea-data.rkt's dispatchers
+ - [ ] no support for unquote or unquote-slicing
 
 Goals
  - [ ] Support for full programs (multiple expressions)
