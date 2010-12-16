@@ -32,6 +32,10 @@
     (check-equal? (sp "foo")
                   (p "foo")))
    (test-case
+    "list literals"
+    (check-equal? (sp ''(1 2 3))
+                  (p ''(1 2 3))))
+   (test-case
     "lambda"
     (check-equal? (sp '(lambda (x) x))
                   (p '(lambda (x) x)))
@@ -53,8 +57,9 @@
                         (a0 (m0 10 foo_bar) foo_bar0)))))
    (test-case
     "nested lets and lambdas"
-    ;; this occasionally fails because of order is lost in the set of symbols,
-    ;; but this does not cause identifier collisions
+    ;; this occasionally fails because order is lost in the set of symbols,
+    ;; but this behavior does not cause identifier collisions
+    ;; verify that the identifier bindings and references are preserved
     (check-equal? (sp '(let ([foo-bar 3])
                          (let ([foo_bar 5])
                            ((lambda (x foo~bar)
