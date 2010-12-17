@@ -1,8 +1,9 @@
 #lang racket
-(require rackunit
-         "main.rkt")
-(require mzlib/etc)
+(require "main.rkt"
+         racket/runtime-path)
 (provide tea-eval)
+
+(define-runtime-path js-environment-file "environment.js")
 
 ;; tea-eval : SExp -> String
 (define (tea-eval sexp)
@@ -10,10 +11,7 @@
    (auto-cleanup-process
     (lambda (p out in err)
       (write-string (string-append
-                     (file->string (build-path
-                                    ;; this file's source directory
-                                    (this-expression-source-directory)
-                                    "environment.js"))
+                     (file->string js-environment-file)
                      "\nEnvironmentModule(this);\n\n"
                      (tea->js sexp))
                     in)
