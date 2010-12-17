@@ -11,4 +11,3 @@ Goals
  - [ ] Support for full programs (multiple expressions)
  - [ ] Sane way to access the `dot' opreator
  - [ ] Sane way to access the `[]' opreator
- - [ ] support for standard library functions from Scheme such as fold and map
