@@ -10,4 +10,5 @@ Failures
 Goals
  - [ ] Support for full programs (multiple expressions)
  - [X] Sane way to access the `dot' opreator
- - [ ] Sane way to access the `[]' opreator
+ - [ ] Sane way to access the `[]' opreator (probably by taking on extra
+       functionality to tea-send
