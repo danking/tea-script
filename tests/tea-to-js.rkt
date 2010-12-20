@@ -146,6 +146,13 @@
     "raise"
     (check-equal? (to-js '(raise "no good!"))
                   (jthrow (jstring "no good!"))))
+   (test-case
+    "send"
+    (check-equal? (to-js '(send foo bar))
+                  (jdot (jid 'foo) (jid 'bar)))
+    (check-equal? (to-js '((send foo bar) 3 4))
+                  (japply (jdot (jid 'foo) (jid 'bar))
+                          (list (jnumber 3) (jnumber 4)))))
 
    (test-case
     "variable definition"

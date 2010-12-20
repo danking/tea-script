@@ -9,5 +9,5 @@ Failures
 
 Goals
  - [ ] Support for full programs (multiple expressions)
- - [ ] Sane way to access the `dot' opreator
+ - [X] Sane way to access the `dot' opreator
  - [ ] Sane way to access the `[]' opreator

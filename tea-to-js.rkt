@@ -36,7 +36,9 @@
     [(tea-raise value)
      (tea-raise->js value)]
     [(tea-void)
-     (jnull)]))
+     (jnull)]
+    [(tea-send object method)
+     (tea-send->js object method)]))
 
 (define (tea-defexps->js tea-exps)
   (map tea-defexp->js tea-exps))
@@ -116,6 +118,10 @@
 
 (define (tea-raise->js value)
   (jthrow (tea-defexp->js value)))
+
+(define (tea-send->js object method)
+  (jdot (tea-defexp->js object)
+        (tea-defexp->js method)))
 
 (define (tea-id->js value)
   (jid value))

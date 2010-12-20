@@ -129,7 +129,16 @@
    (test-case
     "raise"
     (check-equal? (pt '(raise 3))
-                  (tea-raise (tea-number 3))))))
+                  (tea-raise (tea-number 3))))
+   (test-case
+    "send"
+    (check-equal? (pt '(send foo bar))
+                  (tea-send (tea-id 'foo)
+                            (tea-id 'bar)))
+    (check-equal? (pt '((send foo bar) 3 4))
+                  (tea-apply (tea-send (tea-id 'foo)
+                                       (tea-id 'bar))
+                             (list (tea-number 3) (tea-number 4)))))))
 
 (require rackunit/text-ui)
 

@@ -47,6 +47,9 @@
       (parse-tea-exps body))]
     [(list 'raise value)
      (tea-raise (parse-tea-exp value))]
+    [(list 'send object method)
+     (tea-send (parse-tea-exp object)
+               (parse-tea-id method))]
     [(list head tail ...)
      (tea-apply  (parse-tea-exp head)
                  (parse-tea-exps tail))]

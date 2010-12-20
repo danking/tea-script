@@ -56,6 +56,14 @@
                   (p '(let ([foo_bar 4] [foo_bar0 2])
                         (a0 (m0 10 foo_bar) foo_bar0)))))
    (test-case
+    "send"
+    (check-equal? (sp '(send foo bar))
+                  (p '(send foo bar)))
+    (check-equal? (sp '((send foo-bar_ foo_bar-) 3 4))
+                  (p '((send foo_bar_0 foo_bar_1) 3 4)))
+    (check-equal? (sp '((send foo-bar_ foo-bar_) 3 4))
+                  (p '((send foo_bar_0 foo_bar_0) 3 4))))
+   (test-case
     "nested lets and lambdas"
     ;; this occasionally fails because order is lost in the set of symbols,
     ;; but this behavior does not cause identifier collisions
