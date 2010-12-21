@@ -59,10 +59,16 @@
     "send"
     (check-equal? (sp '(send foo bar))
                   (p '(send foo bar)))
-    (check-equal? (sp '((send foo-bar_ foo_bar-) 3 4))
-                  (p '((send foo_bar_0 foo_bar_1) 3 4)))
-    (check-equal? (sp '((send foo-bar_ foo-bar_) 3 4))
-                  (p '((send foo_bar_0 foo_bar_0) 3 4))))
+    (check-equal? (sp '(send foo-bar_ foo_bar- 3 4))
+                  (p '(send foo_bar_0 foo_bar- 3 4)))
+    (check-equal? (sp '(send foo-bar_ foo-bar_ 3 4))
+                  (p '(send foo_bar_0 foo-bar_ 3 4))))
+   (test-case
+    "get-field"
+    (check-equal? (sp '(get-field object field))
+                  (p '(get-field object field)))
+    (check-equal? (sp '(get-field object foo-bar_))
+                  (p '(get-field object foo-bar_))))
    (test-case
     "nested lets and lambdas"
     ;; this occasionally fails because order is lost in the set of symbols,

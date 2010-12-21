@@ -135,10 +135,22 @@
     (check-equal? (pt '(send foo bar))
                   (tea-send (tea-id 'foo)
                             (tea-id 'bar)))
-    (check-equal? (pt '((send foo bar) 3 4))
-                  (tea-apply (tea-send (tea-id 'foo)
-                                       (tea-id 'bar))
-                             (list (tea-number 3) (tea-number 4)))))))
+    (check-equal? (pt '(send foo bar 3 4))
+                  (tea-send (tea-id 'foo)
+                            (tea-id 'bar)
+                            (list (tea-number 3)
+                                  (tea-number 4)))))
+   (test-case
+    "get-field"
+    (check-equal? (pt '(get-field foo bar))
+                  (tea-get-field (tea-id 'foo)
+                                 (tea-id 'bar)))
+    (check-equal? (pt '(get-field foo bar-baz))
+                  (tea-get-field (tea-id 'foo)
+                                 (tea-id 'bar-baz)))
+    (check-equal? (pt '(get-field foo "bar-baz"))
+                  (tea-get-field (tea-id 'foo)
+                                 (tea-id 'bar-baz))))))
 
 (require rackunit/text-ui)
 

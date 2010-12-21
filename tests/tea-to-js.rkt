@@ -146,13 +146,33 @@
     "raise"
     (check-equal? (to-js '(raise "no good!"))
                   (jthrow (jstring "no good!"))))
-   (test-case
+
+   (tpest-case
     "send"
-    (check-equal? (to-js '(send foo bar))
-                  (jdot (jid 'foo) (jid 'bar)))
-    (check-equal? (to-js '((send foo bar) 3 4))
-                  (japply (jdot (jid 'foo) (jid 'bar))
-                          (list (jnumber 3) (jnumber 4)))))
+    ; i'd like to point out I use camelCase only to avoid adding more
+    ; places dependent on how I translate dashed-identifiers-like-this
+    ; ordinarily I would murder who ever chose these identifiers
+    (check-equal? (to-js '(send car drive))
+                  (japply (jdot (jid 'car) (jid 'drive))
+                          (list)))
+    (check-equal? (to-js '(send car setOdometer 0))
+                  (japply (jdot (jid 'car) (jid 'setOdometer))
+                          (list (jnumber 0))))
+    (check-equal? (to-js '(send car drive-fast 60))
+                  (japply (jbracket (jid 'car) "drive-fast")
+                          (list (jnumber 60))))
+    (check-equal? (to-js '(send mathClass addStudent "Bob" 15 "B"))
+                  (japply (jdot (jid 'mathClass) (jid 'addStudent))
+                          (list (jstring "Bob")
+                                (jnumber 15)
+                                (jstring "B")))))
+
+   (test-case
+    "get-field"
+    (check-equal? (to-js '(get-field car make))
+                  (jdot (jid 'car) (jid 'make)))
+    (check-equal? (to-js '(get-field car gas-tank))
+                  (jbracket (jid 'car) (jstring "gas-tank"))))
 
    (test-case
     "variable definition"

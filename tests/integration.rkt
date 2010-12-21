@@ -41,7 +41,21 @@
     (test-case
      "function application"
      (check-equal? (tea->js '(foldl cons '() '(1 2 3 4 5)))
-                   "foldl(cons, [], [1, 2, 3, 4, 5]);\n")))
+                   "foldl(cons, [], [1, 2, 3, 4, 5]);\n"))
+    (test-case
+     "dot and bracket operators"
+     (check-equal? (tea->js '(send object bark))
+                   "object.bark();\n")
+     (check-equal? (tea->js '(get-field car make))
+                   "car.make;\n")
+     (check-equal? (tea->js '(send (makecar "buick" "century") drive "quickly"))
+                   "makecar(\"buick\", \"century\").drive(\"quickly\");\n")
+     (check-equal? (tea->js '(get-field car gas-tank))
+                   "car[\"gas-tank\"];\n")
+     (check-equal? (tea->js '(send car drive-fast))
+                   "car[\"drive-fast\"]();\n")
+     (check-equal? (tea->js '(send car drive-fast 90))
+                   "car[\"drive-fast\"](90);\n")))
    (test-suite
     "program integration tests"
     (test-case
