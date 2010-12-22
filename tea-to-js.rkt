@@ -1,6 +1,7 @@
 #lang racket
 (require "tea-data.rkt"
-         "js-data.rkt")
+         "js-data.rkt"
+         "make-uid.rkt") ; this one is for create-jdot-or-jbracket
 (provide tea-defexp->js)
 
 (define (tea-defexp->js tea-exp)
@@ -37,8 +38,10 @@
      (tea-raise->js value)]
     [(tea-void)
      (jnull)]
-    [(tea-send object method)
-     (tea-send->js object method)]))
+    [(tea-send object method args)
+     (tea-send->js object method args)]
+    [(tea-get-field object field)
+     (tea-get-field->js object field)]))
 
 (define (tea-defexps->js tea-exps)
   (map tea-defexp->js tea-exps))
@@ -119,9 +122,22 @@
 (define (tea-raise->js value)
   (jthrow (tea-defexp->js value)))
 
-(define (tea-send->js object method)
-  (jdot (tea-defexp->js object)
-        (tea-defexp->js method)))
+(define (tea-send->js object method args)
+  (japply (create-jdot-or-jbracket (tea-defexp->js object)
+                                   (tea-defexp->js method))
+          (tea-defexps->js args)))
+
+(define (tea-get-field->js object field)
+  (create-jdot-or-jbracket (tea-defexp->js object)
+                           (tea-defexp->js field)))
+
+(define (create-jdot-or-jbracket object property)
+  (if (jid? property)
+      (let [(identifier-symbol (jid-name property))]
+        (if (not (bad-id? identifier-symbol))
+            (jdot object property)
+            (jbracket object (jstring (symbol->string identifier-symbol)))))
+      (jbracket object property)))
 
 (define (tea-id->js value)
   (jid value))
