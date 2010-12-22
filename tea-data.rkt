@@ -21,7 +21,8 @@
 (tstruct tea-list   (value))
 (tstruct tea-raise  (value))
 (tstruct tea-void   ())
-(tstruct tea-send   (object method))
+(tstruct tea-send   (object method args))
+(tstruct tea-get-field (object field))
 
 ;; a Tea-Define is a (tea-define Tea-Identifier Tea-Expression)
 
@@ -100,8 +101,11 @@
     [(tea-list value) (tea-list (map exp-proc value))]
     [(tea-raise value) (tea-raise (exp-proc value))]
     [(tea-void) t]
-    [(tea-send object method) (tea-send (exp-proc object)
-                                        (exp-proc method))]))
+    [(tea-send object method args) (tea-send (exp-proc object)
+                                             (id-proc method)
+                                             (map exp-proc args))]
+    [(tea-get-field object field) (tea-get-field (exp-proc object)
+                                                 (exp-proc field))]))
 
 (define (tea-accumulator t accumulator exp-proc id-proc)
   (match t
@@ -138,5 +142,8 @@
     [(tea-list value) (accumulator (map exp-proc value))]
     [(tea-raise value) (accumulator (list (exp-proc value)))]
     [(tea-void) (accumulator '())]
-    [(tea-send object method) (accumulator (list (exp-proc object)
-                                                 (exp-proc method)))]))
+    [(tea-send object method args) (accumulator (list* (exp-proc object)
+                                                       (id-proc method)
+                                                       (map exp-proc args)))]
+    [(tea-get-field object field) (accumulator (list (exp-proc object)
+                                                     (exp-proc field)))]))
