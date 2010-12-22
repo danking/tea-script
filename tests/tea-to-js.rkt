@@ -159,7 +159,7 @@
                   (japply (jdot (jid 'car) (jid 'setOdometer))
                           (list (jnumber 0))))
     (check-equal? (to-js '(send car drive-fast 60))
-                  (japply (jbracket (jid 'car) "drive-fast")
+                  (japply (jbracket (jid 'car) (jstring "drive-fast"))
                           (list (jnumber 60))))
     (check-equal? (to-js '(send mathClass addStudent "Bob" 15 "B"))
                   (japply (jdot (jid 'mathClass) (jid 'addStudent))
