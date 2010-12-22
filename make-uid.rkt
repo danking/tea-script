@@ -1,5 +1,5 @@
 #lang racket
-(provide make-symbol-unique)
+(provide make-symbol-unique bad-id?)
 
 ;; make-symbol-unique : Symbol [ListOf Symbol] -> Symbol
 (define (make-symbol-unique id used)
