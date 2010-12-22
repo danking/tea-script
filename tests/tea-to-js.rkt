@@ -147,7 +147,7 @@
     (check-equal? (to-js '(raise "no good!"))
                   (jthrow (jstring "no good!"))))
 
-   (tpest-case
+   (test-case
     "send"
     ; i'd like to point out I use camelCase only to avoid adding more
     ; places dependent on how I translate dashed-identifiers-like-this
