@@ -8,20 +8,27 @@
     (sanitize-ids/id-map exp id-map)))
 
 (define (sanitize-ids/id-map exp id-map)
-  (match-tea exp
-             (lambda (exp) (sanitize-ids/id-map exp id-map))
-             (lambda (id)
-               (tea-id
-                (hash-ref id-map
-                          (tea-id-value id)
-                          (lambda ()
-                            (error 'sanitize-ids
-                                   (string-append
-                                    "somehow we didn't record an id in "
-                                    "the gather-ids phase; end users "
-                                    "should never see this -- ~a ~a")
-                                   id
-                                   id-map)))))))
+  (let ([sanitize-expression (lambda (exp) (sanitize-ids/id-map exp id-map))]
+        [curried-sanitize-id (lambda (id) (sanitize-id id id-map))])
+    (match-tea exp sanitize-expression curried-sanitize-id
+               [(tea-send object method args)
+                (tea-send (sanitize-expression object)
+                          method
+                          (map sanitize-expression args))]
+               [(tea-get-field object field)
+                (tea-get-field (sanitize-expression object) field)])))
+
+(define (sanitize-id id id-map)
+  (tea-id (hash-ref id-map
+                    (tea-id-value id)
+                    (lambda ()
+                      (error 'sanitize-ids
+                             (string-append
+                              "somehow we didn't record an id in "
+                              "the gather-ids phase; end users "
+                              "should never see this -- ~a ~a")
+                             id
+                             id-map)))))
 
 ;; gather-ids : Tea-Expression -> [ListOf Symbol]
 (define (gather-ids exp)
