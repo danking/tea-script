@@ -24,9 +24,9 @@
     (string->symbol (list->string (map sanitize-char chars)))))
 
 ;; bad-id? : Symbol -> Boolean
-(define (bad-id? str)
+(define (bad-id? id)
   (ormap (lambda (char) (assq char char-map))
-         (string->list (symbol->string str))))
+         (string->list (symbol->string id))))
 
 ;; sanitize-char : Character -> Character
 (define (sanitize-char char)
