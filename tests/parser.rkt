@@ -134,7 +134,8 @@
     "send"
     (check-equal? (pt '(send foo bar))
                   (tea-send (tea-id 'foo)
-                            (tea-id 'bar)))
+                            (tea-id 'bar)
+                            (list)))
     (check-equal? (pt '(send foo bar 3 4))
                   (tea-send (tea-id 'foo)
                             (tea-id 'bar)
@@ -150,7 +151,7 @@
                                  (tea-id 'bar-baz)))
     (check-equal? (pt '(get-field foo "bar-baz"))
                   (tea-get-field (tea-id 'foo)
-                                 (tea-id 'bar-baz))))))
+                                 (tea-string "bar-baz"))))))
 
 (require rackunit/text-ui)
 
