@@ -31,7 +31,7 @@
     (tstruct jop jexp ())
       ;; (jnumop Symbol (U (list JExp) (list JExp JExp)))
       (tstruct jprimop jop (op args))
-      ;; (jbracket JExp JString)
+      ;; (jbracket JExp JExp)
       (tstruct jbracket jop (object property))
       ;; (jcond JExp JExp JExp)
       (tstruct jcond jop (condition iftrue iffalse))
@@ -77,7 +77,7 @@
     (match jop
       [(jprimop op args) (jprimop op (map exp-proc args))]
       [(jbracket object property) (jbracket (exp-proc object)
-                                            property)]
+                                            (exp-proc property))]
       [(jcond c t f) (jcond (exp-proc c)
                             (exp-proc t)
                             (exp-proc f))]
