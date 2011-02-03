@@ -1,6 +1,7 @@
 #lang racket
 (require rackunit
          "../make-uid.rkt")
+(provide make-uid-ts)
 
 (define make-uid-ts
   (test-suite
@@ -19,7 +20,3 @@
                   'foo_0)
     (check-equal? (make-symbol-unique 'foo- (list 'foo_ 'foo_0))
                   'foo_1))))
-
-(require rackunit/text-ui)
-
-(run-tests make-uid-ts)

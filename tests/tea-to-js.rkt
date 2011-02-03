@@ -3,6 +3,7 @@
          "../parser.rkt"
          rackunit
          "../tea-to-js.rkt")
+(provide tea-to-js-ts)
 
 (define (to-js sexp) (tea-defexp->js (parse-tea-defexp sexp)))
 (define sa string-append)
@@ -197,7 +198,3 @@
                          (list (jreturn (japply (jid 'x)
                                                 (list (jid 'y)
                                                       (jid 'z))))))))))
-
-(require rackunit/text-ui)
-
-(run-tests tea-to-js-ts)

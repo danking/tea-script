@@ -4,6 +4,7 @@
          "../tea-to-js.rkt"
          rackunit
          "../js-expansions.rkt")
+(provide js-expansions-ts)
 
 (define (pe sexp) (expand-js (tea-defexp->js (parse-tea-defexp sexp))))
 
@@ -93,7 +94,3 @@
                                                  (list (jid 'x)
                                                        (jid 'y)))
                                                 (jnumber 2))))))))))
-
-(require rackunit/text-ui)
-
-(run-tests js-expansions-ts)

@@ -2,6 +2,7 @@
 (require "../tea-data.rkt"
          rackunit
          "../parser.rkt")
+(provide parser-ts)
 
 (define pt parse-tea-defexp)
 
@@ -152,7 +153,3 @@
     (check-equal? (pt '(get-field foo "bar-baz"))
                   (tea-get-field (tea-id 'foo)
                                  (tea-string "bar-baz"))))))
-
-(require rackunit/text-ui)
-
-(run-tests parser-ts)

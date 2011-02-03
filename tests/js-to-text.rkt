@@ -1,6 +1,8 @@
 #lang racket
-(require "../js-data.rkt")
-(require rackunit "../js-to-text.rkt")
+(require "../js-data.rkt"
+         rackunit
+         "../js-to-text.rkt")
+(provide js-to-text-ts)
 
 (define sa string-append)
 (define jt jstatement->text)
@@ -240,7 +242,3 @@
                   "throw 3;\n")
     (check-equal? (jt (jthrow (jstring "oh noes!")))
                   "throw \"oh noes!\";\n"))))
-
-(require rackunit/text-ui)
-
-(run-tests js-to-text-ts)

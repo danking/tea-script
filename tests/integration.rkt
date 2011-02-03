@@ -1,6 +1,7 @@
 #lang racket
 (require rackunit
          "../main.rkt")
+(provide integration-ts)
 
 (define sa string-append)
 
@@ -77,7 +78,3 @@
                        "m0(x, factorial(sub1(x))));\n"
                        "};\n"
                        "factorial(5);\n"))))))
-
-(require rackunit/text-ui)
-
-(run-tests integration-ts)

@@ -38,7 +38,3 @@
    (check-equal? (tea-eval '(let ([x 3] [y 5])
                               (+ x y 2)))
                  "10"))))
-
-(require rackunit/text-ui)
-
-(run-tests eval-ts)

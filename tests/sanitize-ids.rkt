@@ -2,6 +2,7 @@
 (require "../parser.rkt"
          rackunit
          "../sanitize-ids.rkt")
+(provide sanitize-ids-ts)
 
 (define p parse-tea-defexp)
 (define (sp sexp) (sanitize-ids (p sexp)))
@@ -92,7 +93,3 @@
                         (let ([foo_bar 5])
                           (let ([foo_bar1 7])
                             (procedure foo_bar0 foo_bar foo_bar1)))))))))
-
-(require rackunit/text-ui)
-
-(run-tests sanitize-ids-ts)
