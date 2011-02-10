@@ -32,6 +32,87 @@ function EnvironmentModule(toplevel) {
       args[0] / m0.apply(this, args.slice(1));
   }
 
+  function add1(val) {
+    return val + 1;
+  }
+
+  function sub1(val) {
+    return val - 1;
+  }
+
+  // <=
+  function le0 () {
+    return generic_numeric_comparison_function("<=",
+                                               function(a,b) {
+                                                 return a <= b;
+                                               },
+                                               arguments);
+  }
+
+  // <
+  function l0 () {
+    return generic_numeric_comparison_function("<",
+                                              function(a,b) {
+                                                return a < b;
+                                              },
+                                              arguments);
+  }
+
+  // >=
+  function ge0 () {
+    return generic_numeric_comparison_function(">=",
+                                              function(a,b) {
+                                                return a >= b;
+                                              },
+                                              arguments);
+  }
+
+  // >
+  function g0 () {
+    return generic_numeric_comparison_function(">",
+                                              function(a,b) {
+                                                return a > b;
+                                              },
+                                              arguments);
+  }
+
+  // =
+  function e0 () {
+    return generic_numeric_comparison_function("=",
+                                              function(a,b) {
+                                                return a === b;
+                                              },
+                                              arguments);
+  }
+
+  function generic_numeric_comparison_function (name,
+                                                compare,
+                                                arguments_object) {
+    var args = arguments_to_array(arguments_object);
+    var length = args.length;
+    if(length <= 1) {
+      throw name + ": expects at least 2 arguments, given " +
+        length +
+        (length == 1 ? ": " + args[0] : "");
+    } else {
+      return short_circuiting_predicate(compare, args);
+    }
+  }
+
+  // THIS DOESN'T ACTUALLY WORK
+  // I need to delay (make lazy, put into a thunk, etc.) all the args to
+  // all short circuiting predicates.  Alternatively, I could stop being a pussy
+  // and just write the compiler to properly output squeneces of <= or ||
+  function short_circuiting_predicate(predicate, args) {
+    var previous = args[0];
+    for(var i = 1; i < args.length; i++) {
+      if(!predicate(previous, args[i])) {
+        return false; // short circuit
+      }
+    }
+    return true; // no short circuit, all true
+  }
+
   function cons (left, right) {
     return [left].concat(right);
   }
@@ -99,6 +180,14 @@ function EnvironmentModule(toplevel) {
   toplevel._0 = _0;
   toplevel.m0 = m0;
   toplevel.d0 = d0;
+  toplevel.sub1 = sub1;
+  toplevel.add1 = add1;
+
+  toplevel.le0 = le0;
+  toplevel.l0 = l0;
+  toplevel.ge0 = ge0;
+  toplevel.g0 = g0;
+  toplevel.e0 = e0;
 
   toplevel.cons = cons;
   toplevel.first = first;
