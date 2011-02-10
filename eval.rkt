@@ -1,19 +1,29 @@
 #lang racket
 (require "main.rkt"
          racket/runtime-path)
-(provide tea-eval)
+(provide tea-eval
+         tea-program-eval)
 
 (define-runtime-path js-environment-file "environment.js")
 
 ;; tea-eval : SExp -> String
 (define (tea-eval sexp)
+  (send-js-to-rhino (tea->js sexp)))
+
+;; tea-eval : [ListOf SExp] -> String
+(define (tea-program-eval sexps)
+  (send-js-to-rhino (tea-program->js-program sexps)))
+
+(define (send-js-to-rhino js-string)
   (get-output-value
    (auto-cleanup-process
     (lambda (p out in err)
       (write-string (string-append
+                     ;; include the environment
                      (file->string js-environment-file)
                      "\nEnvironmentModule(this);\n\n"
-                     (tea->js sexp))
+                     ;; include our js code
+                     js-string)
                     in)
       (flush-output in)
       (close-output-port in)
