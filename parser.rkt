@@ -27,6 +27,7 @@
     [(? symbol? _) (tea-id exp)]
     [(list 'quote (? symbol? s)) (tea-symbol s)]
     [(list 'quote ls) (tea-list (parse-tea-data ls))]
+    [(list 'quasiquote ls) (error 'parser "quasiquote is not supported yet")]
     [(list 'lambda (list ids ...) bodies ..1)
      (tea-lambda (parse-tea-ids ids)
                  (parse-tea-exps bodies))]
@@ -57,7 +58,7 @@
     [(list head tail ...)
      (tea-apply  (parse-tea-exp head)
                  (parse-tea-exps tail))]
-    [_ (error 'lexer "expected ~s to be an expression" exp)]))
+    [_ (error 'parser "expected ~s to be an expression" exp)]))
 
 (define (parse-tea-ids ids)
   (map parse-tea-id ids))
