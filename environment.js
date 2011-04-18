@@ -44,6 +44,10 @@ function EnvironmentModule(toplevel) {
     return val * val;
   }
 
+  function modulo(number, divisor) {
+    return number % divisor;
+  }
+
   // <=
   function le0 () {
     return generic_numeric_comparison_function("<=",
@@ -101,6 +105,17 @@ function EnvironmentModule(toplevel) {
     } else {
       return short_circuiting_predicate(compare, args);
     }
+  }
+
+  function and() {
+    var args = arguments_to_array(arguments);
+    var length = args.length;
+    for(i=0; i < length; i++) {
+      if (!args[i]) {
+        return false;
+      }
+    }
+    return true;
   }
 
   // THIS DOESN'T ACTUALLY WORK
@@ -166,6 +181,7 @@ function EnvironmentModule(toplevel) {
     for(var i=0; i < n; i++) {
       result[i] = proc(i);
     }
+    return result;
   }
 
   function __tea_quote(value) {
@@ -194,12 +210,15 @@ function EnvironmentModule(toplevel) {
   toplevel.sub1 = sub1;
   toplevel.add1 = add1;
   toplevel.sqr = sqr;
+  toplevel.modulo = modulo;
 
   toplevel.le0 = le0;
   toplevel.l0 = l0;
   toplevel.ge0 = ge0;
   toplevel.g0 = g0;
   toplevel.e0 = e0;
+
+  toplevel.and = and;
 
   toplevel.cons = cons;
   toplevel.first = first;
