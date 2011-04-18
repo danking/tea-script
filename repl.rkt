@@ -1,6 +1,5 @@
 #lang racket
-(require rackunit
-         "eval.rkt")
+(require "eval.rkt")
 
 ;;; THIS IS EXPERIMENTAL.
 ;;; IT DOES NOT ACCUMULATE AN ENVIRONMENT.
