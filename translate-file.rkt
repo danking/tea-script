@@ -9,7 +9,8 @@
   (display-to-file (string-append
                     ;; include the environment
                     (file->string js-environment-file)
-                    "\nEnvironmentModule(this);\n\n"
+                    "\nEnvironmentModule(this);\n\n"   ; rhino
+                    "\nEnvironmentModule(global);\n\n" ; node.js
                     ;; include our js code
                     (tea-program->js-program (file->sexps path)))
                    "a.js"
