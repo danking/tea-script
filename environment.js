@@ -40,6 +40,10 @@ function EnvironmentModule(toplevel) {
     return val - 1;
   }
 
+  function sqr(val) {
+    return val * val;
+  }
+
   // <=
   function le0 () {
     return generic_numeric_comparison_function("<=",
@@ -157,6 +161,13 @@ function EnvironmentModule(toplevel) {
     return list.some(procedure);
   }
 
+  function build_list0(n, proc) {
+    var result = new Array(n);
+    for(var i=0; i < n; i++) {
+      result[i] = proc(i);
+    }
+  }
+
   function __tea_quote(value) {
     this.value = value;
   }
@@ -182,6 +193,7 @@ function EnvironmentModule(toplevel) {
   toplevel.d0 = d0;
   toplevel.sub1 = sub1;
   toplevel.add1 = add1;
+  toplevel.sqr = sqr;
 
   toplevel.le0 = le0;
   toplevel.l0 = l0;
