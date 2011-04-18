@@ -8,7 +8,7 @@
       ls))
 
 (define (remove-factors-of n ls)
-  (let ((initial (sqr n)))
+  (let ((initial (send Math pow n 2))) ; this means Math.pow(n, 2) or (sqr n)
     (foldr (lambda (number others)
              (if (and (>= number initial)
                       (divisble? number n))
