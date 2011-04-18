@@ -211,6 +211,7 @@ function EnvironmentModule(toplevel) {
   toplevel.filter = filter;
   toplevel.andmap = andmap;
   toplevel.ormap = ormap;
+  toplevel.build_list0 = build_list0;
 
   toplevel.__tea_quote = __tea_quote;
   toplevel.symbolp0 = symbolp0;
