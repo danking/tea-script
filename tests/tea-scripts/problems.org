@@ -1,0 +1,6 @@
+* no way to use the new keyword (line 25, etc.)
+* no way to set fields on objects (line 79, etc.)
+* no way to explicitly return from a function (line 83)
+* no way to encode regexp directly (lines 36-55, etc.)
+* no JSON !!!! (line 78)
+* comments are stripped
